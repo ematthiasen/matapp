@@ -1,0 +1,12 @@
+{
+  "name": "matapp",
+  "version": "0.0.1",
+  "scripts": {
+    "frontend": "cd matapp-frontend && npm start",
+    "backend:dev": "cd matapp-backend && npm run dev",
+    "heroku:deploy": "git subtree push --prefix matapp-backend heroku main",
+    "build:frontend": "rm -r matapp-backend/build && cd matapp-frontend && npm run build --prod && cp -r build ../matapp-backend"
+  },
+  "author": "Eirik Matthiasen",
+  "license": "MIT"
+}

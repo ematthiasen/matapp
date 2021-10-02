@@ -1,0 +1,12 @@
+POST http://localhost:3003/api/recipes
+Content-type: application/json
+
+{
+  "title": "Rice and Beans 4",
+  "template": true,
+  "ingredients": [{
+    "fooditemId": "6160686d78c57517d2d6256f",
+    "amount": 210,
+    "amountUnit": "g",
+  }]
+}

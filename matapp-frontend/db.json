@@ -1,0 +1,108 @@
+{
+  "recipes": [
+    {
+      "title": "Rice and Beans",
+      "template": true,
+      "ingredients": [
+        {
+          "foodItemId": 1,
+          "amount": "210",
+          "amountUnit": "g",
+          "id": 1001
+        },
+        {
+          "foodItemId": 2,
+          "amount": 10,
+          "amountUnit": "g",
+          "id": 1002
+        },
+        {
+          "foodItemId": 7,
+          "amount": "12",
+          "amountUnit": "g",
+          "id": 843
+        }
+      ],
+      "id": 101
+    }
+  ],
+  "foodItems": [
+    {
+      "name": "Fat",
+      "protein": "0",
+      "fat": "100",
+      "carbohydrate": "0",
+      "id": 1
+    },
+    {
+      "name": "Protein",
+      "protein": "100",
+      "fat": "0",
+      "carbohydrate": "0",
+      "id": 2
+    },
+    {
+      "name": "Carbohydrates",
+      "protein": "0",
+      "fat": "0",
+      "carbohydrate": "100",
+      "id": 3
+    },
+    {
+      "name": "TEst food item",
+      "protein": "99",
+      "fat": "99",
+      "carbohydrate": "99",
+      "id": 4
+    },
+    {
+      "name": "MOre test",
+      "protein": "",
+      "fat": "",
+      "carbohydrate": "",
+      "id": 5
+    },
+    {
+      "name": "Another more test",
+      "protein": "",
+      "fat": "",
+      "carbohydrate": "",
+      "id": 6
+    },
+    {
+      "name": "Testitem",
+      "protein": "",
+      "fat": "",
+      "carbohydrate": "",
+      "id": 7
+    },
+    {
+      "name": "sdfsfdg",
+      "protein": "",
+      "fat": "",
+      "carbohydrate": "",
+      "id": 8
+    },
+    {
+      "name": "ysdfg",
+      "protein": "",
+      "fat": "",
+      "carbohydrate": "",
+      "id": 9
+    },
+    {
+      "name": "Maba",
+      "protein": "",
+      "fat": "",
+      "carbohydrate": "",
+      "id": 10
+    },
+    {
+      "name": "Bandonkers",
+      "protein": "99",
+      "fat": "99",
+      "carbohydrate": "99",
+      "id": 11
+    }
+  ]
+}

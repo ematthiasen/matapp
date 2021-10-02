@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/recipes
+Content-type: application/json
+
+{
+  "title": "Rice and Beans",
+  "template": true,
+  "ingredients": [
+
+  ]
+}
