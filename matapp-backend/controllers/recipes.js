@@ -1,5 +1,6 @@
 const recipesRouter = require('express').Router()
 const Recipe = require('../models/recipe')
+const logger = require('../utils/logger')
 
 recipesRouter.get('/:id', async (request, response) => {
   const returnedRecipe = await Recipe.findById(request.params.id)
@@ -26,6 +27,12 @@ recipesRouter.post('/', async (request, response) => {
   const recipe = new Recipe(request.body)
   const savedRecipe = await recipe.save()
   return response.json(savedRecipe)
+})
+
+recipesRouter.delete('/:id', async (request, response) => {
+  logger.debug('Received request to delete recipe id', request.params.id )
+  const result = await Recipe.findByIdAndRemove(request.params.id)
+  return response.status(204).end()
 })
 
 module.exports = recipesRouter

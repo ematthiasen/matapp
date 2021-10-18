@@ -19,7 +19,7 @@ fooditemsRouter.post('/', async (request, response) => {
 fooditemsRouter.delete('/:id', async (request, response) => {
   logger.debug('Attempt to delete id:', request.params.id)
   const deletedFooditem = await fooditemService.deleteFooditem(request.params.id)
-  return true
+  return response.json()
 })
 
 module.exports = fooditemsRouter

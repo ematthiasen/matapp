@@ -25,7 +25,7 @@ export const addRecipe = (recipe) => {
 
 export const deleteRecipe = (recipe) => {
   return {
-    type: 'ADD_RECIPE',
+    type: 'DELETE_RECIPE',
     data: recipe
   }
 }

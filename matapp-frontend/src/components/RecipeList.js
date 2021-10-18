@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setActiveRecipe } from '../reducers/activeRecipeReducer'
 import { useHistory } from 'react-router'
 import recipeService from '../services/recipes'
-import { addRecipe } from '../reducers/recipeReducer'
+import { addRecipe, deleteRecipe } from '../reducers/recipeReducer'
 
 const RecipeList = () => {
   const recipes = useSelector(state => state.recipes)
@@ -31,8 +31,14 @@ const RecipeList = () => {
   }
 
   const handleDeleteRecipe = async (recipe) => {
-    //const response = await recipeService.deleteRecipe(recipe)
-    //dispatch(deleteRecipe)
+    console.log('Delete clicked for recipe: ', recipe.id )
+    try {
+      const response = await recipeService.deleteRecipe(recipe)
+      console.log('deleted recipe', response)
+      dispatch(deleteRecipe(recipe))
+    } catch (error) {
+      console.log('Failed to delete recipe')
+    }
   }
 
   return(

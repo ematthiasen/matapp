@@ -19,8 +19,8 @@ const updateRecipe = (changedRecipe) => {
   return axios.put(`${baseUrl}/${changedRecipe.id}`, changedRecipe)
 }
 
-const deleteRecipe = (id) => {
-  return axios.delete(`${baseUrl}/${id}`)
+const deleteRecipe = (recipeToDelete) => {
+  return axios.delete(`${baseUrl}/${recipeToDelete.id}`)
 }
 
 const recipeService = {

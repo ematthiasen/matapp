@@ -60,7 +60,10 @@ function App() {
           <RecipeList />
         </Route>
         <Route path='/fooditems/'>
-          <FooditemList />
+          <div className='column'>
+            <FooditemList />
+            <FooditemForm />
+          </div>
         </Route>
         <Route path='/'>
           <RecipeList />
