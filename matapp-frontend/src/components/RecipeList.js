@@ -30,6 +30,11 @@ const RecipeList = () => {
     history.push(`/recipe/${response.data.id}`)
   }
 
+  const handleDeleteRecipe = async (recipe) => {
+    //const response = await recipeService.deleteRecipe(recipe)
+    //dispatch(deleteRecipe)
+  }
+
   return(
     <ul>
       {recipes.map((recipe) =>
@@ -37,7 +42,10 @@ const RecipeList = () => {
           {recipe.template ?
             <button onClick={() => handleCloneRecipe(recipe)}>Make a copy and edit</button>
             :
-            <button onClick={() => handleShowRecipe(recipe)}>Set Active</button>
+            <>
+              <button onClick={() => handleShowRecipe(recipe)}>Set Active</button>
+              <button onClick={() => handleDeleteRecipe(recipe)}>Delete</button>
+            </>
           }
         </li>
       )}

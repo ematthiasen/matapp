@@ -4,6 +4,7 @@ import FooditemForm from './components/FooditemForm'
 import IngredientForm from './components/IngredientForm'
 import RecipeList from './components/RecipeList'
 import Recipe from './components/Recipe'
+import FooditemList from './components/FooditemList'
 import { useEffect } from 'react'
 import './index.css'
 import recipeService from './services/recipes'
@@ -12,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { initRecipes } from './reducers/recipeReducer'
 import { initFooditems } from './reducers/fooditemReducer'
 import { Switch, Route, Link, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
+
 
 function App() {
   const fooditems = useSelector(state => state.fooditems)
@@ -37,7 +39,7 @@ function App() {
   const Headers = () => (
     <>
       <div className='header'><h1>Recipe stuff</h1></div>
-      <div className='topnav'><Link to='/'>Home</Link></div>
+      <div className='topnav'><Link to='/'>Home</Link><Link to='/fooditems/'>Fooditems</Link></div>
     </>
   )
 
@@ -51,10 +53,14 @@ function App() {
           </div>
           <div className='column'>
             <IngredientForm />
+            <FooditemForm />
           </div>
         </Route>
         <Route path='/recipe/'>
           <RecipeList />
+        </Route>
+        <Route path='/fooditems/'>
+          <FooditemList />
         </Route>
         <Route path='/'>
           <RecipeList />

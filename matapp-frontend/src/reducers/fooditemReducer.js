@@ -18,12 +18,27 @@ export const addFooditem = (fooditem) => {
   }
 }
 
+export const deleteFooditem = (fooditemId) => {
+  return async dispatch => {
+    const deletedItem = await fooditemService.deleteFooditem(fooditemId)
+    console.log('Deleted:', deletedItem)
+    await dispatch({
+      type: 'DELETE_FOODITEM',
+      data: fooditemId
+    })
+  }
+}
+
 const fooditemReducer = (state = [], action) => {
   switch (action.type){
   case 'INIT_FOODITEMS':
     return action.data
   case 'ADD_FOODITEM':
     return state.concat(action.data)
+  case 'DELETE_FOODITEM': {
+    const newState = state.filter(item => item.id !== action.data)
+    return newState
+  }
   default:
     return state
   }
