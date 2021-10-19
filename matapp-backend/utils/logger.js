@@ -5,7 +5,8 @@ const chalk = require('chalk')
 /* global process */
 const info = (...params) => {
   if (process.env.NODE_ENV === 'test') {
-    console.log(chalk.green('TEST-INFO:'), ...params)
+    //console.log(chalk.green('TEST-INFO:'), ...params)
+    //No info logging during test, gives error
   } else {
     console.log(chalk.blue('INFO'), ...params)
   }
@@ -21,9 +22,9 @@ const error = (...params) => {
 
 const debug = (...params) => {
   if (process.env.NODE_ENV === 'test') {
-    console.error(chalk.yellow('TEST-DEBUG:'), ...params)
+    console.info(chalk.yellow('TEST-DEBUG:'), ...params)
   } else {
-    console.error(chalk.yellow('DEBUG:'), ...params)
+    console.info(chalk.yellow('DEBUG:'), ...params)
   }
 }
 

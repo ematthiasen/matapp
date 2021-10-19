@@ -107,85 +107,110 @@ describe('Recipes', () => {
       expect(response.body[0].title).toBe('Initial recipe')
     })
     test('Updating amount of ingredient in recipe works', async () => {
-      const ingredients = helper.initialRecipe.ingredients
-      const originalAmount = ingredients[0].amount
-      ingredients[0].amount = ingredients[0].amount + 69
-      const updatedRecipe = {
-        ...helper.initialRecipe,
-        ingredients: ingredients
-      }
+      //Rewrite 
+      const updatedIngredient = 
+        {
+          amount: 69,
+          id: '6161a20e23f4aee3176a6886'
+        }
+      
+      const recipeId = '61632019d1ccf52ebafc7986'
+
       
       const response = await api
-        .put(`/api/recipes/${updatedRecipe._id}`)
-        .send(updatedRecipe)
+        .put(`/api/recipes/${recipeId}/ingredients/${updatedIngredient.id}`)
+        .send(updatedIngredient)
         .expect(200)
 
-      expect(response.body.ingredients[0].amount).toEqual(originalAmount + 69)
+      expect(response.body.ingredients[0].amount).toEqual(69)
+      expect(response.body.ingredients).toHaveLength(3)
 
     })
     test('Updating amount of ingredient to a illegal value fails', async () => {
-      const ingredients = helper.initialRecipe.ingredients
-      ingredients[0].amount = -1
-      const updatedRecipe = {
-        ...helper.initialRecipe,
-        ingredients: ingredients
-      }
+      const updatedIngredient = 
+        {
+          amount: -1,
+          id: '6161a20e23f4aee3176a6886'
+        }
+
+      const recipeId = '61632019d1ccf52ebafc7986'
 
       const response = await api
-      .put(`/api/recipes/${updatedRecipe._id}`)
-      .send(updatedRecipe)
+      .put(`/api/recipes/${recipeId}/ingredients/${updatedIngredient.id}`)
+      .send(updatedIngredient)
       .expect(400)
       .expect(/(Error)[^.]*(Validation)[^.]*(failed)[^.]* /i)
 
     })
     test('Updating a non-existing ingredient returns correct error code', async () => {
-      //This will just delete ingredients and replace with others (maybe?)
-      //This will just create the ingredient, if a valid object is given.
 
-      //Need to implement the ingredients API, and send whole recipe. Find recipe, then update the ingredient specifically!
+      const updatedIngredient = 
+        {
+          amount: -1,
+          id: '6160686d78c57517d2d6256f' //invalid id
+        }
 
+      const recipeId = '61632019d1ccf52ebafc7986'
 
-      const ingredients = helper.initialRecipe.ingredients
-      ingredients[0] = {
-        ...ingredients[0],
-        _id: '6160686d78c57517d2d6256f',
-        amount: 10
-      }
-
-      const updatedRecipe = {
-        ...helper.initialRecipe,
-        ingredients: ingredients
-      }
       const response = await api
-      .put(`/api/recipes/${updatedRecipe._id}`)
-      .send(updatedRecipe)
+      .put(`/api/recipes/${recipeId}/ingredients/${updatedIngredient.id}`)
+      .send(updatedIngredient)
       .expect(400)
-      .expect(/(Error)[^.]*(Validation)[^.]*(failed)[^.]* /i)
+      .expect(/(Error)[^.]*(Invalid)[^.]*(malformed)[^.]* /i)
+
     })
+
     test('Adding an ingredient to a recipe works', async () => {
+      //3 fooditems, 1 recipe
       //ingredient we want to add
       
-      /*
-      const ingredientToAdd = helper.initialIngredients[2]
+      const ingredientToAdd = 
+        {
+          amount: 100,
+          amountUnit: 'g',
+          fooditemId: '6160686d78c57517d2d6256f'
+        }
+
 
       const recipeId = helper.initialRecipe._id
       let response = await api
         .get(`/api/recipes/${recipeId}`)
         .expect(200)
 
-      expect(response.body.ingredients).toHaveLength(2)
-      const modifiedRecipe = {
-        ...response.body,
-        ingredients: response.body.ingredients.concat(ingredientToAdd._id)
-      }
+      expect(response.body.ingredients).toHaveLength(3)
+
+
       response = await api
-        .put(`/api/recipes/${recipeId}`)
-        .send(modifiedRecipe)
+        .post(`/api/recipes/${recipeId}/ingredients`)
+        .send(ingredientToAdd)
+        .expect(200)
+
+      expect(response.body.ingredients).toHaveLength(4)
+      expect(response.body.ingredients[3]).toEqual(expect.objectContaining({amount: 100}))
+      
+    })
+    test('Adding an invalid ingredient to a recipe fails works', async () => {
+      const ingredientToAdd = 
+        {
+          amount: 100,
+          amountUnit: 'g',
+          fooditemId: 'notAnId'
+        }
+
+
+      const recipeId = helper.initialRecipe._id
+      let response = await api
+        .get(`/api/recipes/${recipeId}`)
         .expect(200)
 
       expect(response.body.ingredients).toHaveLength(3)
-      expect(response.body.ingredients[2]).toEqual(ingredientToAdd._id.toHexString())
-      */
+
+
+      response = await api
+        .post(`/api/recipes/${recipeId}/ingredients`)
+        .send(ingredientToAdd)
+        .expect(400)
+        .expect(/(Failed to validate)[^.]*/i)
     })
   })
 })

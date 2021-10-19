@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const ingredientSchema = require('./ingredient')
 
+/*
 const ingredientSchema = new mongoose.Schema({
   amount: {
     type: Number,
@@ -17,7 +19,8 @@ const ingredientSchema = new mongoose.Schema({
     required: true
   }
 })
-
+*/
+/*
 ingredientSchema.set('toJSON', {
   transform: (doc, returnObject) => {
     returnObject.id = returnObject._id.toString()
@@ -25,7 +28,7 @@ ingredientSchema.set('toJSON', {
     delete returnObject.__v
   }
 })
-
+*/
 const recipeSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -48,7 +51,5 @@ recipeSchema.set('toJSON', {
     delete returnObject.__v
   }
 })
-
-
 
 module.exports = mongoose.model('Recipe', recipeSchema)
