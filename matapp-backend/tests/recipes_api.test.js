@@ -4,6 +4,7 @@ const app = require('../app')
 const Recipe = require('../models/recipe')
 const Fooditem = require('../models/fooditem')
 const helper = require('./test_helper')
+const logger = require('../utils/logger')
 
 const api = supertest(app)
 
@@ -17,7 +18,7 @@ beforeEach(async () => {
 
 describe('Recipes', () => {
   describe('Creating recipes', () => {
-    test('Creating a recipe with empty ingredient list', async () => {
+    test('Creating a recipe with empty ingredient list works', async () => {
       const recipe = {
         title: 'New test recipe',
         template: false,
@@ -33,6 +34,47 @@ describe('Recipes', () => {
       expect(response.body.title).toEqual('New test recipe')
       expect(response.body.template).toEqual(false)
       expect(response.body.ingredients).toEqual([])
+    })
+    test('Creating a recipe with missing title fails', async() => {
+      const recipe = {
+        title: '',
+        template: false,
+      }
+      
+      const response = await api
+        .post('/api/recipes')
+        .send(recipe)
+        .expect(400)
+        .expect(/(title)[^.]*(required)[^.]*/i)
+    })
+    test('Creating a recipe with missing template fails', async() => {
+      const recipe = {
+        title: 'New test recipe',
+      }
+      
+      const response = await api
+        .post('/api/recipes')
+        .send(recipe)
+        .expect(400)
+        .expect(/(template)[^.]*(required)[^.]*/i)
+    })
+    test('Creating a recipe with existing name fails', async () => {
+      const recipe = {
+        title: 'New test recipe',
+        template: false,
+      }
+
+      let response = await api
+        .post('/api/recipes')
+        .send(recipe)
+        .expect(200)
+
+      response = await api
+        .post('/api/recipes')
+        .send(recipe)
+        .expect(400)
+        .expect(/(title)[^.]*(unique)[^.]*/i)
+
     })
     test('Creating a recipe with ingredients adds the ingredients', async () => {
       const recipe = {
@@ -107,7 +149,6 @@ describe('Recipes', () => {
       expect(response.body[0].title).toBe('Initial recipe')
     })
     test('Updating amount of ingredient in recipe works', async () => {
-      //Rewrite 
       const updatedIngredient = 
         {
           amount: 69,
@@ -116,7 +157,6 @@ describe('Recipes', () => {
       
       const recipeId = '61632019d1ccf52ebafc7986'
 
-      
       const response = await api
         .put(`/api/recipes/${recipeId}/ingredients/${updatedIngredient.id}`)
         .send(updatedIngredient)
@@ -142,7 +182,7 @@ describe('Recipes', () => {
       .expect(/(Error)[^.]*(Validation)[^.]*(failed)[^.]* /i)
 
     })
-    test('Updating a non-existing ingredient returns correct error code', async () => {
+    test('Updating a non-existing ingredient returns correct status code', async () => {
 
       const updatedIngredient = 
         {
@@ -189,7 +229,7 @@ describe('Recipes', () => {
       expect(response.body.ingredients[3]).toEqual(expect.objectContaining({amount: 100}))
       
     })
-    test('Adding an invalid ingredient to a recipe fails works', async () => {
+    test('Adding an invalid ingredient to a recipe fails with correct status code', async () => {
       const ingredientToAdd = 
         {
           amount: 100,
@@ -211,6 +251,49 @@ describe('Recipes', () => {
         .send(ingredientToAdd)
         .expect(400)
         .expect(/(Failed to validate)[^.]*/i)
+    })
+  })
+  describe('Deleting recipes', () => {
+    beforeEach(async () => {
+      await helper.populateWithOneRecipe()
+    })
+    test('Deleting a recipe works', async () => {
+      //Check recipe before
+      let response = await api
+        .get('/api/recipes')
+        .expect(200)
+
+      expect(response.body).toHaveLength(1)
+
+      response = await api
+        .delete(`/api/recipes/61632019d1ccf52ebafc7986`)
+        .expect(200)
+      
+      expect(response.body.id).toEqual('61632019d1ccf52ebafc7986')
+      
+      response = await api
+        .get('/api/recipes')
+        .expect(200)
+
+      expect(response.body).toHaveLength(0)
+    })
+    test('Deleting a recipe that does not exist fails with correct status code', async () => {
+      
+      let response = await api
+        .get('/api/recipes')
+        .expect(200)
+
+      expect(response.body).toHaveLength(1)
+
+      response = await api
+        .delete(`/api/recipes/61632019d1GGGG2ebafc7986`)
+        .expect(400)
+
+      response = await api
+        .get('/api/recipes')
+        .expect(200)
+
+      expect(response.body).toHaveLength(1)
     })
   })
 })

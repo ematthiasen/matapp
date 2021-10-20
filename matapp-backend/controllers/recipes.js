@@ -32,7 +32,7 @@ recipesRouter.post('/', async (request, response) => {
 recipesRouter.delete('/:id', async (request, response) => {
   logger.debug('Received request to delete recipe id', request.params.id )
   const result = await Recipe.findByIdAndRemove(request.params.id)
-  return response.status(204).end()
+  return response.status(200).json(result)
 })
 
 /*

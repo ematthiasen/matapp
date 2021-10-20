@@ -34,8 +34,15 @@ const deleteFooditem = async (fooditemId) => {
   */
 
 
-  const result = Fooditem.findOneAndDelete({_id: fooditemId})
-  logger.debug('findoneanddelete returned', result)
+  //const result = await Fooditem.findOneAndDelete({_id: fooditemId})
+  const result = await Fooditem.findByIdAndRemove(fooditemId)
+  return result
+}
+
+const updateFooditem = async (fooditemId, fooditem) => {
+  logger.debug('Attempting to update fooditem', fooditem)
+  const result = await Fooditem.findByIdAndUpdate(fooditemId, fooditem, { new: true, runValidators: true })
+  logger.debug('updated fooditem: ', result)
   return result
 }
 
@@ -46,5 +53,6 @@ const deleteFooditem = async (fooditemId) => {
 module.exports = {
   getAllFooditems,
   createNewFooditem,
-  deleteFooditem
+  deleteFooditem,
+  updateFooditem
 }
