@@ -164,29 +164,83 @@ describe('fooditems', () => {
         .put('/api/fooditems/6160686d78c57517d2d6256f')
         .send(newFoodItem)
         .expect(400)
-        .expect(/(Validation failed)[^.]*(expected)[^.]*(_id)[^.]*(unique)[^.]*/i)
+        .expect(/(Validation failed)[^.]*(Do not try to update a fooditemId with a different fooditem id in the request body)[^.]*/i)
 
       
     })
     test('Modifying the nutrient contents of the fooditem works', async () => {
-      //test here
-      expect(false).toBe(true)
+      //updating 'Fat' with some extra carbs, and lowering fat
+      const newFoodItem = {
+        fat: 50,
+        carbohydrate: 20,
+        protein: 0 
+      }
+      let response = await api
+        .put('/api/fooditems/6160686d78c57517d2d6256f')
+        .send(newFoodItem)
+        .expect(200)
+
+      expect(response.body.name).toBe('Fat')
+      expect(response.body.fat).toEqual(50)
+      expect(response.body.carbohydrate).toEqual(20)
+      expect(response.body.protein).toEqual(0)
+    
     })
+
+
     test('Modifying name to a already existing name fails', async () => {
       //test here
-      expect(false).toBe(true)
+      const newFoodItem = {
+        name: 'Fat',
+        fat: 33,
+        carbohydrate: 22,
+        protein: 11 
+      }
+      let response = await api
+        .post('/api/fooditems')
+        .send(newFoodItem)
+        .expect(400)
+        .expect(/(Validation failed)[^.]*(expected)[^.]*(name)[^.]*(to be)[^.]*(unique)[^.]*/i)
+
     })
     test('Modifying nutrient contents to negative values fail', async () => {
       //test here
-      expect(false).toBe(true)
+      const newFoodItem = {
+        fat: -1 
+      }
+
+      let response = await api
+        .put('/api/fooditems/6160686d78c57517d2d6256f')
+        .send(newFoodItem)
+        .expect(400)
+        .expect(/(Validation failed)[^.]*(less than minimum allowed value)[^.]*/i)
+
+    })
+    test('Modifying fooditem so that sum of nutrients is more than 100 fails', async () => {
+      //updating 'Fat' with some extra carbs, and lowering fat
+      const newFoodItem = {
+        fat: 50,
+        carbohydrate: 30,
+        protein: 30 
+      }
+      let response = await api
+        .put('/api/fooditems/6160686d78c57517d2d6256f')
+        .send(newFoodItem)
+        .expect(400)
+        .expect(/(Validation failed)[^.]*(Sum of fat, protein and carbs cannot be greater than 100)[^.]*/i)
+
     })
     test('Modifying nutrient contents to values above 100 fails', async () => {
       //test here
-      expect(false).toBe(true)
-    })
-    test('Modifying fooditem so that sum of nutrients is more than 100 fails', async () => {
-      //test here
-      expect(false).toBe(true)
+      const newFoodItem = {
+        fat: 101,
+      }
+      let response = await api
+        .put('/api/fooditems/6160686d78c57517d2d6256f')
+        .send(newFoodItem)
+        .expect(400)
+        .expect(/(Validation failed)[^.]*(fat)[^.]*(is more than maximum allowed value)[^.]*/i)
+
     })
   })
 })
