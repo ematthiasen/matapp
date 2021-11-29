@@ -1,6 +1,19 @@
 const mongoose = require('mongoose')
 const Fooditem = require('../models/fooditem')
 const Recipe = require('../models/recipe')
+const User = require('../models/user')
+
+const initialUser = {
+  username: 'testuser1',
+  name: 'test user 1',
+  passwordHash: '$2b$10$fcGRW3zs7mbiwOGjwdSRUumNn0fUN/z2ntJ1B/BIcLigRua.imu9K',
+  _id: mongoose.Types.ObjectId('61a525d7f51cf1918aa1c9f9')
+}
+
+const populateDbWithInitialUser = async () => {
+  const user = new User(initialUser)
+  await user.save()
+}
 
 const initialFooditems =
 [
@@ -70,6 +83,9 @@ module.exports =
 {
   initialFooditems,
   initialRecipe,
+  initialUser,
   populateDbWithInitialFooditems,
   populateWithOneRecipe,
+  populateDbWithInitialUser
+  
 }

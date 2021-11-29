@@ -9,6 +9,8 @@ const logger = require('./utils/logger')
 const fooditemsRouter = require('./controllers/fooditems')
 //const ingredientsRouter = require('./controllers/ingredients')
 const recipesRouter = require('./controllers/recipes')
+const usersRouter = require('./controllers/users')
+
 const path = require('path')
 
 // DB connection
@@ -33,6 +35,8 @@ app.use('/api/fooditems', fooditemsRouter)
 //app.use('/api/ingredients', ingredientsRouter)
 
 app.use('/api/recipes', recipesRouter)
+
+app.use('/api/users', usersRouter)
 
 /*app.get('/', (request, response) => {
   response.send('Hello world!')
