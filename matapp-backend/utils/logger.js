@@ -28,6 +28,14 @@ const debug = (...params) => {
   }
 }
 
+const request = (...params) => {
+  if (process.env.NODE_ENV === 'test') {
+    console.info(chalk.green('TEST-REQUEST:'), ...params)
+  } else {
+    console.info(chalk.green('REQUEST:'), ...params)
+  }
+}
+
 module.exports= {
-  info, error, debug
+  info, error, debug, request
 }

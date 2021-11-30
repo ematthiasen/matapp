@@ -10,6 +10,7 @@ const fooditemsRouter = require('./controllers/fooditems')
 //const ingredientsRouter = require('./controllers/ingredients')
 const recipesRouter = require('./controllers/recipes')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 const path = require('path')
 
@@ -37,6 +38,8 @@ app.use('/api/fooditems', fooditemsRouter)
 app.use('/api/recipes', recipesRouter)
 
 app.use('/api/users', usersRouter)
+
+app.use('/api/login', loginRouter)
 
 /*app.get('/', (request, response) => {
   response.send('Hello world!')

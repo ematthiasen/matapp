@@ -1,16 +1,23 @@
+const logger = require('./logger')
+
+
 const requestLogger = (request, response, next) => {
   if (process.env.NODE_ENV !== 'test') {
-    console.log('Method:', request.method)
-    console.log('Path:  ', request.path)
-    console.log('Body:  ', request.body)
-    console.log('---')
+    logger.request('Method:', request.method)
+    logger.request('Path:  ', request.path)
+    logger.request('Body:  ', request.body)
+    logger.request('---')
   }
   next()
 }
 
 const errorHandler = (error, request, response, next) => {
-  console.error('Error handler middleware: error.name:', error.name)
-  console.error('Error handler middleware: error.message:', error.message)
+  logger.error('Error handler middleware: error.name:', error.name)
+  logger.error('Error handler middleware: error.message:', error.message)
+
+  if (error.name === 'AuthenticationError') {
+    return response.status(401).json({ error: error.message })
+  }
 
   if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
