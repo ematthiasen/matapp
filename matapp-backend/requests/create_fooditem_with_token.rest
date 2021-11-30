@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/fooditems
+Content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtYXR0aGlhc2VuIiwiaWQiOiI2MWE1MjMzOTRmZWUyM2U5OTgwOWE1MGQiLCJpYXQiOjE2MzgyOTc5Mjd9.cqWvH38xkRhyXLvRmSMUzxW_NiDH6HMVEoRZ0qRNYmU
+
+{
+  "name": "Test Food Item" ,
+  "protein": 50,
+  "carbohydrate": 4
+}
