@@ -3,6 +3,31 @@ const logger = require('../utils/logger')
 const ingredientSchema = require('../models/ingredient')
 const mongoose = require('mongoose')
 
+const getOneRecipe = async (recipeId) => {
+  const oneRecipe = await Recipe.findById(recipeId)
+  return oneRecipe
+}
+
+const getAllRecipes = async () => {
+  const allRecipes = await Recipe.find({})
+  return allRecipes
+}
+
+const updateRecipe = async (recipeId, recipeData) => {
+  //only allowed to modify recipe title or template status
+  const recipeToUpdate = await Recipe.findById(recipeId)
+
+  const updatedRecipe = {
+    ...recipeToUpdate,
+    title: recipeData.title ? recipeData.title : recipeToUpdate.title,
+    template: recipeData.template ? recipeData.template : recipeToUpdate.template
+  }
+  logger.debug(updatedRecipe)
+
+
+  const savedRecipe = await Recipe.findByIdAndUpdate(recipeId, updatedRecipe, {new: true, runValidators: true})
+  return savedRecipe  
+}
 
 const addIngredientToRecipe = async (recipeId, ingredient) => {
   const recipeToUpdate = await Recipe.findById(recipeId)
@@ -49,6 +74,9 @@ const updateIngredientInRecipe = async (recipeId, ingredientId, ingredient) => {
 }
 
 module.exports = {
+  getOneRecipe,
+  getAllRecipes,
+  updateRecipe,
   addIngredientToRecipe,
   updateIngredientInRecipe
 }

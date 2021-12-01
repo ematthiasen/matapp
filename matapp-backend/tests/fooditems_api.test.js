@@ -61,6 +61,7 @@ describe('fooditems', () => {
       const response = await api
         .post('/api/fooditems')
         .send(fooditem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
 
       expect(response.body.name).toBe('Testfood')
@@ -74,6 +75,7 @@ describe('fooditems', () => {
       const response = await api
         .post('/api/fooditems')
         .send(fooditem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
         .expect('Content-type', /application\/json/)
       
@@ -89,6 +91,7 @@ describe('fooditems', () => {
       const response = await api
         .post('/api/fooditems')
         .send(fooditem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/error/)
     })
@@ -100,6 +103,7 @@ describe('fooditems', () => {
       
       let response = await api
         .delete('/api/fooditems/6160686d78c57517d2d6256f')
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
       
       logger.debug('Response body', response.body)
@@ -117,6 +121,7 @@ describe('fooditems', () => {
     test('deleting a non-existing fooditem returns the correct error code and list remains unchanged', async () => {
       let response = await api
         .delete('/api/fooditems/6160686d78cGGGG7d2d6256f')
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(error)[^.]*/i)
 
@@ -139,6 +144,7 @@ describe('fooditems', () => {
       let response = await api
         .put('/api/fooditems/6160686d78c57517d2d6256f')
         .send(newFoodItem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
       
       expect(response.body.name).toBe(newFoodItem.name)
@@ -163,6 +169,7 @@ describe('fooditems', () => {
       let response = await api
         .put('/api/fooditems/6160686d78c57517d2d6256f')
         .send(newFoodItem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(Validation failed)[^.]*(Do not try to update a fooditemId with a different fooditem id in the request body)[^.]*/i)
 
@@ -178,6 +185,7 @@ describe('fooditems', () => {
       let response = await api
         .put('/api/fooditems/6160686d78c57517d2d6256f')
         .send(newFoodItem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
 
       expect(response.body.name).toBe('Fat')
@@ -199,6 +207,7 @@ describe('fooditems', () => {
       let response = await api
         .post('/api/fooditems')
         .send(newFoodItem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(Validation failed)[^.]*(expected)[^.]*(name)[^.]*(to be)[^.]*(unique)[^.]*/i)
 
@@ -212,6 +221,7 @@ describe('fooditems', () => {
       let response = await api
         .put('/api/fooditems/6160686d78c57517d2d6256f')
         .send(newFoodItem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(Validation failed)[^.]*(less than minimum allowed value)[^.]*/i)
 
@@ -226,6 +236,7 @@ describe('fooditems', () => {
       let response = await api
         .put('/api/fooditems/6160686d78c57517d2d6256f')
         .send(newFoodItem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(Validation failed)[^.]*(Sum of fat, protein and carbs cannot be greater than 100)[^.]*/i)
 
@@ -238,6 +249,7 @@ describe('fooditems', () => {
       let response = await api
         .put('/api/fooditems/6160686d78c57517d2d6256f')
         .send(newFoodItem)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(Validation failed)[^.]*(fat)[^.]*(is more than maximum allowed value)[^.]*/i)
 

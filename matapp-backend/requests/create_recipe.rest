@@ -1,24 +1,25 @@
 POST http://localhost:3003/api/recipes
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtYXR0aGlhc2VuIiwiaWQiOiI2MWE1MjMzOTRmZWUyM2U5OTgwOWE1MGQiLCJpYXQiOjE2MzgyOTc5Mjd9.cqWvH38xkRhyXLvRmSMUzxW_NiDH6HMVEoRZ0qRNYmU
 
 {
-  "title": "Rice and Beans 9",
+  "title": "Rice and Beans 19",
   "template": "true",
   "ingredients": [
     {
       "fooditemId": "6160686d78c57517d2d6256f",
       "amount": "210",
-      "amountUnit": "g",
+      "amountUnit": "g"
     },
     {
       "fooditemId": "61606a165ed3db7ba9cd1785",
       "amount": "10",
-      "amountUnit": "g",
+      "amountUnit": "g"
     },
     {
       "fooditemId": "61606a0b5ed3db7ba9cd1783",
       "amount": "12",
-      "amountUnit": "g",
+      "amountUnit": "g"
     }
   ]
 }

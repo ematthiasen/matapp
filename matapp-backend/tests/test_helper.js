@@ -4,10 +4,12 @@ const Recipe = require('../models/recipe')
 const User = require('../models/user')
 
 const initialUser = {
-  username: 'testuser1',
-  name: 'test user 1',
-  passwordHash: '$2b$10$fcGRW3zs7mbiwOGjwdSRUumNn0fUN/z2ntJ1B/BIcLigRua.imu9K',
-  _id: mongoose.Types.ObjectId('61a525d7f51cf1918aa1c9f9')
+  username: 'initialuser',
+  name: 'Initial User',
+  password: 'initialpassword',
+  passwordHash: '$2b$10$51Y6B4nWar6at7b7RUqRZOzYIOE2lBZcVuIwIjYlHVCy4ikTbHmQK',
+  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImluaXRpYWx1c2VyIiwiaWQiOiI2MWE3YWUxNTYxYmMxMGY0ZjEwZjA4N2IiLCJpYXQiOjE2MzgzNzk1NDV9.ILYYGoNyP11sLz2vU3NpThf-qI6CcBYsj4GNEcn-ut0',
+  _id: mongoose.Types.ObjectId('61a7ae1561bc10f4f10f087b')
 }
 
 const populateDbWithInitialUser = async () => {

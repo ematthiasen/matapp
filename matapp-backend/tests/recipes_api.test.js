@@ -23,10 +23,12 @@ describe('Recipes', () => {
         title: 'New test recipe',
         template: false,
       }
+      const token = helper.initialUser.token
 
       const response = await api
         .post('/api/recipes')
         .send(recipe)
+        .auth(token, {type: 'bearer'})
         .expect(200)
       
       //console.log('Recipe created', response.body)
@@ -40,10 +42,12 @@ describe('Recipes', () => {
         title: '',
         template: false,
       }
-      
+      const token = helper.initialUser.token
+
       const response = await api
         .post('/api/recipes')
         .send(recipe)
+        .auth(token, {type: 'bearer'})
         .expect(400)
         .expect(/(title)[^.]*(required)[^.]*/i)
     })
@@ -55,6 +59,7 @@ describe('Recipes', () => {
       const response = await api
         .post('/api/recipes')
         .send(recipe)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(template)[^.]*(required)[^.]*/i)
     })
@@ -64,14 +69,18 @@ describe('Recipes', () => {
         template: false,
       }
 
+      const token = helper.initialUser.token
+
       let response = await api
         .post('/api/recipes')
         .send(recipe)
+        .auth(token, {type: 'bearer'})
         .expect(200)
 
       response = await api
         .post('/api/recipes')
         .send(recipe)
+        .auth(token, {type: 'bearer'})
         .expect(400)
         .expect(/(title)[^.]*(unique)[^.]*/i)
 
@@ -102,9 +111,10 @@ describe('Recipes', () => {
       const response = await api
         .post('/api/recipes')
         .send(recipe)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
       
-      //console.log('Recipe created', response.body)
+      console.log('Recipe created', response.body)
 
       expect(response.body.title).toEqual('New test recipe with ingredients')
       expect(response.body.template).toEqual(false)
@@ -135,6 +145,7 @@ describe('Recipes', () => {
       const response = await api
         .post('/api/recipes')
         .send(recipe)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
     })
   })
@@ -160,6 +171,7 @@ describe('Recipes', () => {
       const response = await api
         .put(`/api/recipes/${recipeId}/ingredients/${updatedIngredient.id}`)
         .send(updatedIngredient)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
 
       expect(response.body.ingredients[0].amount).toEqual(69)
@@ -178,6 +190,7 @@ describe('Recipes', () => {
       const response = await api
       .put(`/api/recipes/${recipeId}/ingredients/${updatedIngredient.id}`)
       .send(updatedIngredient)
+      .auth(helper.initialUser.token, {type: 'bearer'})
       .expect(400)
       .expect(/(Error)[^.]*(Validation)[^.]*(failed)[^.]* /i)
 
@@ -195,6 +208,7 @@ describe('Recipes', () => {
       const response = await api
       .put(`/api/recipes/${recipeId}/ingredients/${updatedIngredient.id}`)
       .send(updatedIngredient)
+      .auth(helper.initialUser.token, {type: 'bearer'})
       .expect(400)
       .expect(/(Error)[^.]*(Invalid)[^.]*(malformed)[^.]* /i)
 
@@ -223,6 +237,7 @@ describe('Recipes', () => {
       response = await api
         .post(`/api/recipes/${recipeId}/ingredients`)
         .send(ingredientToAdd)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
 
       expect(response.body.ingredients).toHaveLength(4)
@@ -249,6 +264,7 @@ describe('Recipes', () => {
       response = await api
         .post(`/api/recipes/${recipeId}/ingredients`)
         .send(ingredientToAdd)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
         .expect(/(Failed to validate)[^.]*/i)
     })
@@ -267,6 +283,7 @@ describe('Recipes', () => {
 
       response = await api
         .delete(`/api/recipes/61632019d1ccf52ebafc7986`)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(200)
       
       expect(response.body.id).toEqual('61632019d1ccf52ebafc7986')
@@ -287,6 +304,7 @@ describe('Recipes', () => {
 
       response = await api
         .delete(`/api/recipes/61632019d1GGGG2ebafc7986`)
+        .auth(helper.initialUser.token, {type: 'bearer'})
         .expect(400)
 
       response = await api

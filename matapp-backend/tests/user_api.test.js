@@ -18,9 +18,9 @@ beforeEach( async () => {
 describe('Users', () => {
   test('Creating a user with valid data', async () => {
     const user = {
-      username: 'ematthiasen',
-      name: 'Eirik',
-      password: 'eirikpassword'
+      username: 'testuser',
+      name: 'Test user',
+      password: 'testpassword'
     }
 
     const response = await api
@@ -29,8 +29,8 @@ describe('Users', () => {
       .expect(200)
     
     console.log(response.body)
-    expect(response.body.username).toBe('ematthiasen')
-    expect(response.body.name).toBe('Eirik')
+    expect(response.body.username).toBe('testuser')
+    expect(response.body.name).toBe('Test user')
     expect(response.body.password).not.toBeDefined()
     expect(response.body.passwordHash).not.toBeDefined()
 
@@ -38,7 +38,7 @@ describe('Users', () => {
   })
   test('Creating a duplicate user fails', async () => {
     const user = {
-      username: 'testuser1',
+      username: 'initialuser',
       name: 'does not matter',
       password: 'does not matter'
     }
@@ -49,6 +49,20 @@ describe('Users', () => {
       .expect(400)
       .expect(/(error)[^.]*(username)[^.]*(unique)[^.]*/i)
 
+  })
+  test('Logging in the initial user generates a valid token', async () => {
+    const user = {
+      username: 'initialuser',
+      password: 'initialpassword'
+    }
+    const response = await api
+      .post('/api/login')
+      .send(user)
+      .expect(200)
+
+    console.log('Response:', response.text)
+
+    expect(response.body).toBeDefined()
   })
 })
 
