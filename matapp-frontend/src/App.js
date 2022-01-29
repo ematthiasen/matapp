@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { initRecipes } from './reducers/recipeReducer'
 import { initFooditems } from './reducers/fooditemReducer'
 import { Switch, Route, Link, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
+import { Navbar, Button, Nav } from 'react-bootstrap'
 
 function App() {
   const fooditems = useSelector(state => state.fooditems)
@@ -22,6 +23,10 @@ function App() {
 
   const [showLoginForm, setShowLoginForm] = useState(false)
   const [user, setUser] = useState(null)
+
+  const logout = () => {
+    console.log('logout!')
+  }
 
   useEffect(() => {
     recipeService
@@ -40,14 +45,36 @@ function App() {
   }, [dispatch])
 
   const Headers = () => (
-    <>
+    <div>
+      <div className='header'><h1>Recipe stuff</h1></div>
+      <Navbar collapseOnSelect expand='lg' bg='dark' variant='light'>
+        <Navbar.Toggle aria-controls='navbar' />
+        <Navbar.Collapse id='navbar'>
+          <Nav className='mr-auto'>
+            <Nav.Link href='/' as={Link} to='/'>
+              Home
+            </Nav.Link>
+            <Nav.Link href='/fooditems/' as={Link} to='/fooditems'>
+              Fooditems
+            </Nav.Link>
+          </Nav>
+          <Nav>
+            { user
+              ? <><Navbar.Text variant='primary'>{user.username} logged in</Navbar.Text><Link to='' onClick={logout}>Logout</Link></>
+              : <Nav.Link to='' onClick={() => setShowLoginForm(true)}>show Login form</Nav.Link>
+            }
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </div>
+    /*<>
       <div className='header'><h1>Recipe stuff</h1></div>
       <div className='topnav'><Link to='/'>Home</Link><Link to='/fooditems/'>Fooditems</Link>
         {user
           ? <Link to='/logout/'>{user.username} logged in - logout</Link>
           : <Link to='' onClick={() => setShowLoginForm(true)}>show Login form</Link>
         }</div>
-    </>
+    </>*/
   )
 
   return (
