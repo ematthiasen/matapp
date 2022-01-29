@@ -40,9 +40,26 @@ const Recipe = () => {
   if(!ingredients) {
     ingredients = activeRecipe.ingredients.map(ingredient => {
       const fooditem = fooditems.find(item => item.id === ingredient.fooditemId)
-      console.log('found fooditem' ,fooditem)
-      ingredient.fooditem = fooditem
-      return ingredient
+      if(fooditem === undefined) {
+        console.log('Fooditem in recipe not found in fooditem list')
+        return {
+          fooditem:
+            {
+              name: '<Deleted fooditem>',
+              protein: 0,
+              fat: 0,
+              carbohydrate: 0,
+              id: 0
+            },
+          amount: 0,
+          amountUnit: 'g'
+        }
+      }
+      else {
+        console.log('found fooditem' ,fooditem)
+        ingredient.fooditem = fooditem
+        return ingredient
+      }
     })
   }
   console.log('ingredients:',ingredients)

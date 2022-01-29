@@ -8,5 +8,6 @@
     "build:frontend": "rm -r matapp-backend/build && cd matapp-frontend && npm run build --prod && cp -r build ../matapp-backend"
   },
   "author": "Eirik Matthiasen",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {}
 }
