@@ -1,19 +1,41 @@
 import React from 'react'
 //import useState from 'react'
 import { Form, Button } from 'react-bootstrap'
-const LoginForm = ({ hideLoginField }) => {
+import loginService from '../services/login'
+import { useDispatch } from 'react-redux'
+import { setLoggedInUser } from '../reducers/loggedInUserReducer'
 
+
+const LoginForm = ({ hideLoginField }) => {
+  const dispatch = useDispatch()
   // eslint-disable-next-line no-unused-vars
   //const [username, setUsername] = useState('')
 
-  const onSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+
+    try {
+      console.log('user', event.target.formUsername.value)
+      console.log('pw', event.target.formPassword.value)
+      const userdata = {
+        username: event.target.formUsername.value,
+        password: event.target.formPassword.value
+      }
+      const receivedTokenAndUserdata = await loginService.loginUser(userdata)
+      console.log('token', receivedTokenAndUserdata)
+      dispatch(setLoggedInUser(receivedTokenAndUserdata))
+      window.localStorage.setItem('MatappSavedLocalUser', JSON.stringify(receivedTokenAndUserdata))
+      hideLoginField()
+    } catch (error) {
+      console.log(error)
+    }
+
     console.log('submitted!')
-    hideLoginField()
+
   }
 
   return(
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className='mb-3' controlId='formUsername'>
         <Form.Label>Username</Form.Label>
         <Form.Control

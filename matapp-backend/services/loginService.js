@@ -30,7 +30,15 @@ const loginUser = async (userdata) => {
 
   const token = jwt.sign(userForToken, config.SECRET)
 
-  return token
+
+
+  return {
+    token,
+    username: user.username,
+    name: user.name,
+    id: user._id
+  }
+
 }
 
 module.exports = {
