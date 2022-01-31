@@ -6,12 +6,16 @@ import fooditemReducer from './reducers/fooditemReducer'
 import recipeReducer from './reducers/recipeReducer'
 import activeRecipeReducer from './reducers/activeRecipeReducer'
 import loggedInUserReducer from './reducers/loggedInUserReducer'
+import notificationReducer from './reducers/notificationReducer'
+import timerReducer from './reducers/timerReducer'
 
 const reducer = combineReducers({
   fooditems: fooditemReducer,
   recipes: recipeReducer,
   activeRecipe: activeRecipeReducer,
-  loggedInUser: loggedInUserReducer
+  loggedInUser: loggedInUserReducer,
+  notification: notificationReducer,
+  timer: timerReducer
 })
 
 const store = createStore(

@@ -20,12 +20,20 @@ export const addFooditem = (fooditem) => {
 
 export const deleteFooditem = (fooditemId) => {
   return async dispatch => {
-    const deletedItem = await fooditemService.deleteFooditem(fooditemId)
-    console.log('Deleted:', deletedItem)
-    await dispatch({
-      type: 'DELETE_FOODITEM',
-      data: fooditemId
-    })
+    try{
+      const deletedItem = await fooditemService.deleteFooditem(fooditemId)
+      console.log('Deleted:', deletedItem)
+      await dispatch({
+        type: 'DELETE_FOODITEM',
+        data: fooditemId
+      })
+      return null
+    }
+    catch (error) {
+      console.log('error message', error.message)
+      return error
+    }
+
   }
 }
 

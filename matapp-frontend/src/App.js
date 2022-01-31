@@ -6,6 +6,7 @@ import RecipeList from './components/RecipeList'
 import Recipe from './components/Recipe'
 import FooditemList from './components/FooditemList'
 import LoginForm from './components/LoginForm'
+import Notifications from './components/Notifications'
 import { useEffect, useState } from 'react'
 import './index.css'
 import recipeService from './services/recipes'
@@ -14,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { initRecipes } from './reducers/recipeReducer'
 import { initFooditems } from './reducers/fooditemReducer'
 import { Switch, Route, Link, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
-import { Navbar, Button, Nav } from 'react-bootstrap'
+import { Navbar, Button, Nav, Container } from 'react-bootstrap'
 import { setLoggedInUser, clearLoggedInUser } from './reducers/loggedInUserReducer'
 
 function App() {
@@ -57,7 +58,7 @@ function App() {
 
   const Headers = () => (
     <div>
-      <div className='header'><h1>Recipe stuff</h1></div>
+      <Container><h1>Recipe stuff</h1></Container>
       <Navbar collapseOnSelect expand='lg' bg='primary' variant='dark'>
         <Navbar.Toggle aria-controls='navbar' />
         <Navbar.Collapse id='navbar'>
@@ -71,26 +72,20 @@ function App() {
           </Nav>
           <Nav>
             { loggedInUser
-              ? <><Navbar.Text variant='light'>user {loggedInUser.username} logged in</Navbar.Text><Nav.Link to='' onClick={logout}>Logout</Nav.Link></>
+              ? <><Navbar.Text>user {loggedInUser.username} logged in</Navbar.Text><Nav.Link to='' onClick={logout}>Logout</Nav.Link></>
               : <Nav.Link to='' onClick={() => setShowLoginForm(true)}>show Login form</Nav.Link>
             }
           </Nav>
         </Navbar.Collapse>
       </Navbar>
     </div>
-    /*<>
-      <div className='header'><h1>Recipe stuff</h1></div>
-      <div className='topnav'><Link to='/'>Home</Link><Link to='/fooditems/'>Fooditems</Link>
-        {user
-          ? <Link to='/logout/'>{user.username} logged in - logout</Link>
-          : <Link to='' onClick={() => setShowLoginForm(true)}>show Login form</Link>
-        }</div>
-    </>*/
+
   )
 
   return (
-    <div>
+    <Container>
       <Headers />
+      <Notifications />
       {showLoginForm ?
         <LoginForm hideLoginField={() => setShowLoginForm(false)}/> :
         <></>
@@ -110,15 +105,19 @@ function App() {
         </Route>
         <Route path='/fooditems/'>
           <div className='column'>
-            <FooditemList />
-            <FooditemForm />
+            <Container>
+              <FooditemList />
+            </Container>
+            <Container>
+              <FooditemForm />
+            </Container>
           </div>
         </Route>
         <Route path='/'>
           <RecipeList />
         </Route>
       </Switch>
-    </div>
+    </Container>
   )
 }
 
