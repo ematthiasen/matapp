@@ -12,8 +12,8 @@ const FooditemList = () => {
   const handleDelete = async (id) => {
     const returnvalue = await dispatch(deleteFooditem(id))
     if(returnvalue) {
-      console.log('received error: ', returnvalue.message)
-      dispatch(createNotification(returnvalue.message, 'error'))
+      console.log('received error: ', returnvalue.response.data.error)
+      dispatch(createNotification(returnvalue.message + ' - ' + returnvalue.response.data.error, 'error'))
     } else {
       console.log('retrnvalue null, success!')
     }

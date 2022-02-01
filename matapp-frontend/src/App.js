@@ -30,6 +30,8 @@ function App() {
     console.log('logout!')
     window.localStorage.removeItem('MatappSavedLocalUser')
     dispatch(clearLoggedInUser())
+    fooditemService.setToken(null)
+    recipeService.setToken(null)
   }
 
   useEffect(() => {
@@ -37,6 +39,8 @@ function App() {
     if(savedUserJSON) {
       const savedUser = JSON.parse(savedUserJSON)
       dispatch(setLoggedInUser(savedUser))
+      recipeService.setToken(savedUser.token)
+      fooditemService.setToken(savedUser.token)
     }
   }, [])
 

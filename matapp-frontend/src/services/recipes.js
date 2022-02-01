@@ -1,6 +1,12 @@
 import axios from 'axios'
 //const baseUrl = 'http://localhost:3003/api/recipes'
 const baseUrl = '/api/recipes'
+let token = null
+
+const setToken = (newToken) => {
+  token = `bearer ${newToken}`
+  console.log('token set:', token)
+}
 
 const getAll = () => {
   return axios.get(baseUrl)
@@ -12,15 +18,26 @@ const getRecipe = (id) => {
 }
 
 const createRecipe = (newRecipe) => {
-  return axios.post(baseUrl, newRecipe)
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  return axios.post(baseUrl, newRecipe, config)
 }
 
 const updateRecipe = (changedRecipe) => {
-  return axios.put(`${baseUrl}/${changedRecipe.id}`, changedRecipe)
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  return axios.put(`${baseUrl}/${changedRecipe.id}`, changedRecipe, config)
 }
 
 const deleteRecipe = (recipeToDelete) => {
-  return axios.delete(`${baseUrl}/${recipeToDelete.id}`)
+  const config = {
+    headers: { Authorization: token }
+  }
+  return axios.delete(`${baseUrl}/${recipeToDelete.id}`, config)
 }
 
 const recipeService = {
@@ -28,7 +45,8 @@ const recipeService = {
   getRecipe,
   createRecipe,
   updateRecipe,
-  deleteRecipe
+  deleteRecipe,
+  setToken
 }
 
 export default recipeService

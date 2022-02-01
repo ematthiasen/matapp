@@ -4,6 +4,8 @@ import { Form, Button } from 'react-bootstrap'
 import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
 import { setLoggedInUser } from '../reducers/loggedInUserReducer'
+import fooditemService from '../services/fooditem'
+import recipeService from '../services/recipes'
 
 
 const LoginForm = ({ hideLoginField }) => {
@@ -25,6 +27,8 @@ const LoginForm = ({ hideLoginField }) => {
       console.log('token', receivedTokenAndUserdata)
       dispatch(setLoggedInUser(receivedTokenAndUserdata))
       window.localStorage.setItem('MatappSavedLocalUser', JSON.stringify(receivedTokenAndUserdata))
+      fooditemService.setToken(receivedTokenAndUserdata.token)
+      recipeService.setToken(receivedTokenAndUserdata.token)
       hideLoginField()
     } catch (error) {
       console.log(error)
