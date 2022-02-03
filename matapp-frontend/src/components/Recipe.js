@@ -69,7 +69,6 @@ const Recipe = () => {
     //first find ingredient to update
     //Need a callback to App.
   }
-  console.log('ingredients', ingredients)
 
   const localSave = () => {
     const saveObject = {
@@ -87,16 +86,10 @@ const Recipe = () => {
 
   const saveToBackend = async () => {
     localSave()
-    const tempIngredients = activeRecipe.ingredients
-    const strippedIngredients = tempIngredients.map(ingredient => {
-      delete ingredient.fooditem
-      return ingredient
-    })
-    const recipeToSave = { ...activeRecipe, ingredients: strippedIngredients }
-    const response = await recipeService.updateRecipe(recipeToSave)
+    const response = await recipeService.updateAllIngredients(activeRecipe, ingredients)
+    console.log('response return data', response.data)
     dispatch(setActiveRecipe(response.data))
   }
-
 
   return (
     <div>
@@ -107,7 +100,7 @@ const Recipe = () => {
       <h2>Ingredients</h2>
       <table><tbody>
         {ingredients.map((ingredient) =>
-          <Ingredient key={ingredient.id} ingredient={ingredient} updateAmount={updateIngredientAmount}/>
+          <Ingredient key={ingredient.id} ingredient={ingredient} updateAmount={updateIngredientAmount} />
         )}
       </tbody></table>
       <h2>Nutritional information</h2>

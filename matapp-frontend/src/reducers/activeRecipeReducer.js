@@ -32,6 +32,15 @@ export const updateIngredientAmount = (ingredientId, newAmount) => {
   }
 }
 
+export const deleteIngredient = (ingredientId) => {
+  return {
+    type: 'DELETE_INGREDIENT',
+    data: {
+      ingredientId
+    }
+  }
+}
+
 
 const activeRecipeReducer = (state = null, action) => {
   switch (action.type) {
@@ -52,6 +61,10 @@ const activeRecipeReducer = (state = null, action) => {
     const newIngredientList = state.ingredients.map((ingredient) => ingredient.id !== updatedIngredient.id ? ingredient : updatedIngredient)
     //console.log('New state:', { ...state, ingredients: newIngredientList } )
     return { ...state, ingredients: newIngredientList }
+  }
+  case 'DELETE_INGREDIENT': {
+    const newIngredientsArray = state.ingredients.filter(ingredient => ingredient.id !== action.data.ingredientId)
+    return { ...state, ingredients: newIngredientsArray }
   }
   default:
     return state

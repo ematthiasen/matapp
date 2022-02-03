@@ -40,13 +40,48 @@ const deleteRecipe = (recipeToDelete) => {
   return axios.delete(`${baseUrl}/${recipeToDelete.id}`, config)
 }
 
+const addIngredientToRecipe = (recipe, ingredient) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  return axios.post(`${baseUrl}/${recipe.id}/ingredients`, ingredient, config)
+
+}
+
+const updateAllIngredients = (recipe, ingredientsList) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  return axios.put(`${baseUrl}/${recipe.id}/ingredients`, ingredientsList, config)
+}
+
+const updateIngredientInRecipe = (recipe, ingredient) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  return axios.put(`${baseUrl}/${recipe.id}/ingredients/${ingredient.id}`, ingredient, config)
+}
+
+const deleteIngredientFromRecipe = (recipe, ingredientId) => {
+  console.log('we deleting now boys!')
+  const config = {
+    headers: { Authorization: token }
+  }
+  return axios.delete(`${baseUrl}/${recipe.id}/ingredients/${ingredientId}`, config)
+}
+
+
 const recipeService = {
   getAll,
   getRecipe,
   createRecipe,
   updateRecipe,
   deleteRecipe,
-  setToken
+  setToken,
+  addIngredientToRecipe,
+  updateIngredientInRecipe,
+  deleteIngredientFromRecipe,
+  updateAllIngredients
 }
 
 export default recipeService
