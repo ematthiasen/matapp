@@ -4,6 +4,7 @@ import { setActiveRecipe } from '../reducers/activeRecipeReducer'
 import { useHistory } from 'react-router'
 import recipeService from '../services/recipes'
 import { addRecipe, deleteRecipe } from '../reducers/recipeReducer'
+import RecipeListItem from './RecipeListItem'
 
 const RecipeList = () => {
   const recipes = useSelector(state => state.recipes)
@@ -32,28 +33,28 @@ const RecipeList = () => {
 
   const handleDeleteRecipe = async (recipe) => {
     console.log('Delete clicked for recipe: ', recipe.id )
-    try {
-      const response = await recipeService.deleteRecipe(recipe)
-      console.log('deleted recipe', response)
-      dispatch(deleteRecipe(recipe))
-    } catch (error) {
-      console.log('Failed to delete recipe')
+    const confirmDelete = window.confirm('Are you sure you want to delete recipe? This cannot be undone')
+    if (confirmDelete) {
+      try {
+        const response = await recipeService.deleteRecipe(recipe)
+        console.log('deleted recipe', response)
+        dispatch(deleteRecipe(recipe))
+      } catch (error) {
+        console.log('Failed to delete recipe')
+      }
     }
   }
 
   return(
     <ul>
+
       {recipes.map((recipe) =>
-        <li key={recipe.id}>{recipe.title}
-          {recipe.template ?
-            <button onClick={() => handleCloneRecipe(recipe)}>Make a copy and edit</button>
-            :
-            <>
-              <button onClick={() => handleShowRecipe(recipe)}>Set Active</button>
-              <button onClick={() => handleDeleteRecipe(recipe)}>Delete</button>
-            </>
-          }
-        </li>
+        <RecipeListItem key={recipe.id}
+          recipe={recipe}
+          handleCloneRecipe={handleCloneRecipe}
+          handleShowRecipe={handleShowRecipe}
+          handleDeleteRecipe={handleDeleteRecipe}
+        />
       )}
     </ul>
   )
