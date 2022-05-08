@@ -24,13 +24,18 @@ recipesRouter.put('/:id', userAuthenticator, async (request, response) => {
   response.json(updatedRecipe)
 })
 
+//@TODO: Update to use recipeService
 recipesRouter.post('/', userAuthenticator, async (request, response) => {
   console.log('New recipe received: ', request.body)
-  const recipe = new Recipe(request.body)
-  const savedRecipe = await recipe.save()
-  return response.json(savedRecipe)
+  
+  const createdRecipe = await recipeService.createRecipe(request.body)
+  return response.json(createdRecipe)
+  //const recipe = new Recipe(request.body)
+  //const savedRecipe = await recipe.save()
+  //return response.json(savedRecipe)
 })
 
+//@TODO: Update to use recipeService
 recipesRouter.delete('/:id', userAuthenticator, async (request, response) => {
   logger.debug('Received request to delete recipe id', request.params.id )
   const result = await Recipe.findByIdAndRemove(request.params.id)

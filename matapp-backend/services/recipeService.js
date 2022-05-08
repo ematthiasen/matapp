@@ -2,16 +2,33 @@ const Recipe = require('../models/recipe')
 const logger = require('../utils/logger')
 const ingredientSchema = require('../models/ingredient')
 const mongoose = require('mongoose')
+const dateFormatter = require('../utils/dateFormatter')
 
 const getOneRecipe = async (recipeId) => {
   const oneRecipe = await Recipe.findById(recipeId)
   return oneRecipe
 }
 
-const getAllRecipes = async () => {
+const getAllRecipes = async (recipeData) => {
   const allRecipes = await Recipe.find({})
   return allRecipes
 }
+
+const createRecipe = async (recipeData) => {
+  const recipeToCreate = {
+    ...recipeData,
+    //date: recipeData.date ? recipeData.date : dateFormatter.getDate()
+    date: dateFormatter.getDate()
+  }
+  logger.info('Saving recipe, date is', recipeToCreate.date)
+
+  //Check for recipes with same name. If exists, add version number and try again.
+  //@TODO: Implement
+  const recipe = new Recipe(recipeToCreate)
+  const savedRecipe = await recipe.save()
+  return savedRecipe
+}
+
 
 const updateRecipe = async (recipeId, recipeData) => {
   //only allowed to modify recipe title or template status
@@ -94,6 +111,7 @@ module.exports = {
   getOneRecipe,
   getAllRecipes,
   updateRecipe,
+  createRecipe,
   addIngredientToRecipe,
   updateIngredientInRecipe,
   deleteIngredientInRecipe,
