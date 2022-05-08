@@ -29,6 +29,13 @@ const updateRecipe = async (recipeId, recipeData) => {
   return savedRecipe  
 }
 
+const updateIngredientList = async (recipeId, ingredientList) => {
+  //const recipeToUpdate = await Recipe.findById(recipeId)
+
+  const updatedRecipe = await Recipe.findByIdAndUpdate(recipeId, { ingredients: ingredientList }, {new: true, runValidators: true})
+  return updatedRecipe
+}
+
 const addIngredientToRecipe = async (recipeId, ingredient) => {
   const recipeToUpdate = await Recipe.findById(recipeId)
   //logger.debug('Recipe found:', recipeToUpdate)
@@ -73,10 +80,22 @@ const updateIngredientInRecipe = async (recipeId, ingredientId, ingredient) => {
   return updatedRecipe
 }
 
+const deleteIngredientInRecipe = async (recipeId, ingredientId) => {
+  const recipeToUpdate = await Recipe.findById(recipeId)
+
+  const newIngredientsList = recipeToUpdate.ingredients.filter(ingredient => ingredient.id !== ingredientId)
+  const updatedRecipe = await Recipe.findByIdAndUpdate(recipeId, { ingredients: newIngredientsList }, {new: true, runValidators: true})
+  return updatedRecipe
+
+
+}
+
 module.exports = {
   getOneRecipe,
   getAllRecipes,
   updateRecipe,
   addIngredientToRecipe,
-  updateIngredientInRecipe
+  updateIngredientInRecipe,
+  deleteIngredientInRecipe,
+  updateIngredientList
 }

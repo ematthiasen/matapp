@@ -1,5 +1,6 @@
 const Fooditem = require('../models/fooditem')
 const logger = require('../utils/logger')
+const Recipe = require('../models/recipe')
 
 
 const getAllFooditems = async () => {
@@ -27,11 +28,32 @@ const createNewFooditem = async (newFooditem) => {
 const deleteFooditem = async (fooditemId) => {
   logger.debug('fooditem ID to delete:', fooditemId)
 
-  /*Logic:
-  Is user allowed to delete fooditem?
+    /*
   Is the fooditem used in a recipe?
-    -> return object that shows which recipes are in use?
+    -> throw error with list of recipes the fooditem is in
   */
+  const allRecipes = await Recipe.find({})
+  logger.debug('check if fooditem ID is used in any recipes', fooditemId)
+
+  const occurances = allRecipes.reduce((instances, recipe) => {
+    logger.debug('checking', recipe)
+    const result = recipe.ingredients.reduce((fooditemPresent, ingredient) => {
+      logger.debug('checking ingredient', ingredient)
+
+      return ingredient.fooditemId === fooditemId ?  true :  false || fooditemPresent
+    }, false)
+    if (result) {
+      return instances.concat(recipe.title)
+    }
+
+  }, [])
+  if (occurances.length > 0) {
+    const error = new Error()
+    error.name = 'ValidationError'
+    error.message = `Fooditem is in use in recipe(s) ${occurances}`
+  }
+
+
 
 
   //const result = await Fooditem.findOneAndDelete({_id: fooditemId})

@@ -47,9 +47,17 @@ recipesRouter.get('/:id/ingredients', async (request, response) => {
   //response.json(returnedRecipe)
 })
 
+recipesRouter.delete('/:recipeId/ingredients/:ingredientId', userAuthenticator, async (request, response) => {
+  //delete one ingredient in the recipe
+  logger.debug('Recipeid', request.params.recipeId, 'ingredient to delete', request.params.ingredientId, request.body)
+
+  const returnObject = await recipeService.deleteIngredientInRecipe(request.params.recipeId, request.params.ingredientId)
+  return response.status(200).json(returnObject)
+})
+
 recipesRouter.post('/:id/ingredients', userAuthenticator, async (request, response) => {
   //add an ingredient to the recipe
-  //logger.debug('Recipeid', request.params.id, 'ingredient to add', request.body)
+  logger.debug('Recipeid', request.params.id, 'ingredient to add', request.body)
   const returnObject = await recipeService.addIngredientToRecipe(request.params.id, request.body)
   if (returnObject) {
     //for now return success
@@ -59,6 +67,15 @@ recipesRouter.post('/:id/ingredients', userAuthenticator, async (request, respon
   }
 })
 
+//update the whole ingredients table at once - 
+recipesRouter.put('/:id/ingredients', userAuthenticator, async (request, response) => {
+  logger.debug('RecipeId', request.params.id, 'new ingredients list', request.body)
+
+  const returnObject = await recipeService.updateIngredientList(request.params.id, request.body)
+  return response.status(200).json(returnObject)
+})
+
+
 recipesRouter.put('/:recipeId/ingredients/:ingredientId', userAuthenticator, async (request, response) => {
   //update an ingredient in the recipe
   logger.debug('Recipeid', request.params.recipeId, 'ingredient to update', request.params.ingredientId, request.body)
@@ -67,5 +84,7 @@ recipesRouter.put('/:recipeId/ingredients/:ingredientId', userAuthenticator, asy
   const returnObject = await recipeService.updateIngredientInRecipe(request.params.recipeId, request.params.ingredientId, request.body)
   return response.status(200).json(returnObject)
 })
+
+
 
 module.exports = recipesRouter

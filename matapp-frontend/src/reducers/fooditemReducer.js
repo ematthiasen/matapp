@@ -9,23 +9,36 @@ export const initFooditems = (fooditemList) => {
 
 export const addFooditem = (fooditem) => {
   return async dispatch => {
-    const createdItem = await fooditemService.createFooditem(fooditem)
-    console.log('DB created fooditem: ', createdItem.data)
-    await dispatch({
-      type: 'ADD_FOODITEM',
-      data: createdItem.data
-    })
+    try {
+      const createdItem = await fooditemService.createFooditem(fooditem)
+      console.log('DB created fooditem: ', createdItem.data)
+      await dispatch({
+        type: 'ADD_FOODITEM',
+        data: createdItem.data
+      })
+      return null
+    }
+    catch (error) {
+      return error
+    }
   }
 }
 
 export const deleteFooditem = (fooditemId) => {
   return async dispatch => {
-    const deletedItem = await fooditemService.deleteFooditem(fooditemId)
-    console.log('Deleted:', deletedItem)
-    await dispatch({
-      type: 'DELETE_FOODITEM',
-      data: fooditemId
-    })
+    try{
+      const deletedItem = await fooditemService.deleteFooditem(fooditemId)
+      console.log('Deleted:', deletedItem)
+      await dispatch({
+        type: 'DELETE_FOODITEM',
+        data: fooditemId
+      })
+      return null
+    }
+    catch (error) {
+      return error
+    }
+
   }
 }
 

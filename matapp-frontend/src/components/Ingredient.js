@@ -1,7 +1,7 @@
 import React from 'react'
 import '../index.css'
 import { useState } from 'react'
-import { updateIngredientAmount } from '../reducers/activeRecipeReducer'
+import { updateIngredientAmount, deleteIngredient } from '../reducers/activeRecipeReducer'
 import { useDispatch } from 'react-redux'
 
 const Ingredient = ({ ingredient, updateAmount }) => {
@@ -41,6 +41,11 @@ const Ingredient = ({ ingredient, updateAmount }) => {
     dispatch(updateIngredientAmount(ingredient.id, value))
   }
 
+  const handleDeleteIngredient = () => {
+    //deleteIngredient(ingredient.id)
+    dispatch(deleteIngredient(ingredient.id))
+  }
+
   if(!editMode) return (
     <tr onClick={() => setEditMode(!editMode)}>
       <td style={{ width: 100 }}>{ingredient.fooditem.name}</td>
@@ -56,6 +61,7 @@ const Ingredient = ({ ingredient, updateAmount }) => {
         <button onClick={() => increaseAmountByOne()}>Increase</button>
         <button onClick={() => decreaseAmountByOne()}>Decrease</button>
         <input value={sliderValue} type='range' min='0' max='1000' onChange={handleSliderAmount}></input>
+        <button onClick={() => handleDeleteIngredient()}>Delete</button>
       </td>
     </tr>
   )
