@@ -5,6 +5,7 @@ import { useHistory } from 'react-router'
 import recipeService from '../services/recipes'
 import { addRecipe, deleteRecipe } from '../reducers/recipeReducer'
 import RecipeListItem from './RecipeListItem'
+import { Container } from 'react-bootstrap'
 
 const RecipeList = () => {
   const recipes = useSelector(state => state.recipes)
@@ -46,7 +47,7 @@ const RecipeList = () => {
   }
 
   return(
-    <ul>
+    <Container>
 
       {recipes.map((recipe) =>
         <RecipeListItem key={recipe.id}
@@ -56,7 +57,7 @@ const RecipeList = () => {
           handleDeleteRecipe={handleDeleteRecipe}
         />
       )}
-    </ul>
+    </Container>
   )
 }
 
