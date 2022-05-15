@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 const ingredientSchema = require('./ingredient')
+const dateFormatter = require('../utils/dateFormatter')
 
 const recipeSchema = new mongoose.Schema({
   title: {
@@ -12,6 +13,11 @@ const recipeSchema = new mongoose.Schema({
     type: Boolean,
     required: true
   },
+  date: {
+    type: Date,
+    required: false,
+    min: '2021-01-01'
+  },
   ingredients: [ingredientSchema]
 })
 
@@ -22,6 +28,9 @@ recipeSchema.set('toJSON', {
     returnObject.id = returnObject._id.toString()
     delete returnObject._id
     delete returnObject.__v
+    if (returnObject.date) {
+      returnObject.date = dateFormatter.formatDate(returnObject.date)
+    }
   }
 })
 

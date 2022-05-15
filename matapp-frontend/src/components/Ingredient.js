@@ -1,5 +1,4 @@
 import React from 'react'
-import '../index.css'
 import { useState } from 'react'
 import { updateIngredientAmount, deleteIngredient } from '../reducers/activeRecipeReducer'
 import { useDispatch } from 'react-redux'
