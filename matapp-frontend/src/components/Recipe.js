@@ -6,6 +6,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router'
 import { setActiveRecipe } from '../reducers/activeRecipeReducer'
 import recipeService from '../services/recipes'
+import { Box, Typography, Button, Stack, Accordion, AccordionSummary, Card, CardContent, Grid, AccordionDetails, Slider } from '@mui/material'
+import SaveIcon from '@mui/icons-material/Save'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const Recipe = () => {
   const activeRecipe = useSelector(state => state.activeRecipe)
@@ -92,17 +97,58 @@ const Recipe = () => {
   }
 
   return (
-    <div>
-      <h1>{activeRecipe.title}</h1>
-      <button onClick={localSave}>Save changes locally</button>
-      <button onClick={cancelAndReturn}>Discard changes and return</button>
-      <button onClick={saveToBackend}>Save to server</button>
-      <h2>Ingredients</h2>
-      <table><tbody>
-        {ingredients.map((ingredient) =>
-          <Ingredient key={ingredient.id} ingredient={ingredient} updateAmount={updateIngredientAmount} />
-        )}
-      </tbody></table>
+    <Grid
+      sx={{
+        width: '50%', flexShrink: 1
+      }}>
+      <Typography
+        variant='h4'
+        sx={{
+        }}>
+        {activeRecipe.title}
+      </Typography>
+      <Stack direction='row' spacing={1}>
+        <Button variant='contained' startIcon={<CloudUploadIcon />} onClick={saveToBackend} >
+          Server
+        </Button>
+        <Button variant='outlined' startIcon={<SaveIcon />} onClick={localSave}>Local</Button>
+        <Button variant='outlined' startIcon={<DeleteIcon />} onClick={cancelAndReturn}>Delete</Button>
+
+      </Stack>
+      <br />
+      <Card variant='outlined'
+        sx={{
+          gridRow: '1',
+          gridColumn: 'span 2',
+        }}>
+        <CardContent>
+          <Typography variant='h5'>Ingredients</Typography>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+            >
+              Test
+            </AccordionSummary>
+            <AccordionDetails>
+              Lots of text here<br />
+              Lots of text here<br />
+              Lots of text here<br />
+              Lots of text here<br />
+              Lots of text here<br />
+              Lots of text here<br />
+              Lots of text here<br />
+              <Stack direction='row' spacing={2} sx={{ mb: 1 }} >
+                <Button variant='contained'>Shoop de do</Button>
+                <Slider></Slider>
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
+        </CardContent>
+      </Card>
+      {ingredients.map((ingredient) =>
+        <Ingredient key={ingredient.id} ingredient={ingredient} updateAmount={updateIngredientAmount} />
+      )}
+      <br />
       <h2>Nutritional information</h2>
       <table>
         <thead><tr><td>Total calories</td><td>Total protein</td><td>Total carbs</td><td>Total fat</td></tr></thead>
@@ -112,7 +158,7 @@ const Recipe = () => {
           <td>{ingredientCalc.calcTotalCarbsOf(ingredients)}</td>
           <td>{ingredientCalc.calcTotalFatOf(ingredients)}</td></tr></tbody>
       </table>
-    </div>
+    </Grid>
   )
 
 }

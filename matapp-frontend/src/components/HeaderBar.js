@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Tooltip } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Tooltip, Card, CardContent, CardActionArea, CardActions, Popover } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import { Typography } from '@mui/material'
@@ -8,13 +8,22 @@ import AdbIcon from '@mui/icons-material/Adb'
 import { Box } from '@mui/material'
 import { Link as RouterLink, MemoryRouter } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { TextField } from '@mui/material'
+import loginService from '../services/login'
+import { setLoggedInUser } from '../reducers/loggedInUserReducer'
+import fooditemService from '../services/fooditem'
+import recipeService from '../services/recipes'
 
 export default function HeaderBar({ logout, showLogin }) {
 
   const [anchorElementUser, setAnchorElementUser] = useState(null)
   const [anchorElementNavigation, setAnchorElementNavigation] = useState(null)
+  const [anchorElementLogin, setAnchorElementLogin] = useState(null)
   const loggedInUser = useSelector(state => state.loggedInUser)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
+  const dispatch = useDispatch()
 
   const handleUserMenu = (event) => {
     console.log(event.currentTarget)
@@ -25,9 +34,19 @@ export default function HeaderBar({ logout, showLogin }) {
     setAnchorElementNavigation(event.currentTarget)
   }
 
+  const handleOpenLoginMenu = (event) => {
+    setAnchorElementLogin(event.currentTarget)
+  }
+
   const handleClose = () => {
     setAnchorElementUser(null)
 
+  }
+
+  const handleCloseLoginMenu = () => {
+    setAnchorElementLogin(null)
+    setUsername('')
+    setPassword('')
   }
 
   const handleCloseNavigationMenu = () => {
@@ -35,10 +54,34 @@ export default function HeaderBar({ logout, showLogin }) {
   }
 
   const handleLogout = () => {
-    //@TODO: Fix user logout
-    console.log('Log out user')
     logout()
     setAnchorElementUser(null)
+  }
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    console.log(username)
+    console.log(password)
+    // if successful login, handleCloseLoginMenu()
+
+
+    try {
+
+      const userdata = {
+        username,
+        password
+      }
+      const receivedTokenAndUserdata = await loginService.loginUser(userdata)
+      console.log('token', receivedTokenAndUserdata)
+      dispatch(setLoggedInUser(receivedTokenAndUserdata))
+      window.localStorage.setItem('MatappSavedLocalUser', JSON.stringify(receivedTokenAndUserdata))
+      fooditemService.setToken(receivedTokenAndUserdata.token)
+      recipeService.setToken(receivedTokenAndUserdata.token)
+    } catch (error) {
+      console.log(error)
+    }
+
+    console.log('submitted!')
   }
 
   return (
@@ -198,7 +241,8 @@ export default function HeaderBar({ logout, showLogin }) {
               <Button
                 variant="RouterLink"
                 noWrap
-                onClick={() => showLogin(true)}
+                //onClick={() => showLogin(true)}
+                onClick={handleOpenLoginMenu}
                 sx={{
                   mr: 2,
                   display: { xs: 'none', md: 'flex' },
@@ -208,6 +252,67 @@ export default function HeaderBar({ logout, showLogin }) {
                 }}>
                 Login
               </Button>
+              <Popover
+                component="form"
+                onSubmit={handleLogin}
+                id='login-menu'
+                open={Boolean(anchorElementLogin)}
+                anchorEl={anchorElementLogin}
+                onClose={handleCloseLoginMenu}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+              >
+                <Box
+                  sx={{
+                    alignContent: 'right'
+                  }}>
+                  <Typography
+                    variant='h6'
+                    sx={{
+                      color: 'inherit',
+                      p: 2,
+                    }}
+                  >
+                  Login
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    px: 2,
+                    py: 1
+                  }}>
+                  <TextField value={username} onChange={( event ) => setUsername(event.target.value)} controlId="formUsername" id="username" label="username" variant="filled" /><br />
+                </Box>
+                <Box
+                  sx={{
+                    px: 2,
+                    py: 1
+                  }}
+                >
+                  <TextField value={password} onChange={( event ) => setPassword(event.target.value)} id="password" label="password" variant="filled" type="password" />
+                </Box>
+                <Box
+                  sx={{
+                    p:2
+                  }}>
+                  <Button
+                    onClick={handleCloseLoginMenu}
+                    variant='contained'
+                  >
+                  Close
+                  </Button>
+                  {' '}
+                  <Button
+                    variant='contained'
+                    onClick={handleLogin}
+                    type='submit'
+                  >
+                  Login
+                  </Button>
+                </Box>
+              </Popover>
             </Box>
           }
 
