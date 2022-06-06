@@ -24,11 +24,11 @@ const FooditemList = () => {
   }
 
   return (
-    <Grid container spacing={2} flexWrap='wrap' justifyContent='center' >
+    <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
       <Grid item xl={6} lg={8} md={10} sm={12}>
+        <Typography variant='h4' sx={{ m: 2 }}>Fooditems</Typography>
         <Card>
           <CardContent>
-            <Typography variant='h5'>Fooditems</Typography>
             <Table>
               <TableHead>
                 <TableRow>

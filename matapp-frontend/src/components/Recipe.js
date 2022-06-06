@@ -100,11 +100,12 @@ const Recipe = () => {
   }
 
   return (
-    <Grid container spacing={2} flexWrap='wrap' justifyContent='center' >
+    <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
       <Grid item xs={12}>
         <Typography
           variant='h4'
           sx={{
+            m: 2
           }}>
           {activeRecipe.title}
         </Typography>

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { updateIngredientAmount, deleteIngredient } from '../reducers/activeRecipeReducer'
 import { useDispatch } from 'react-redux'
 import { Accordion, Box, AccordionSummary, AccordionDetails, Slider, Button, Typography, Stack } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import DeleteOutline from '@mui/icons-material/Delete'
 
 
 const Ingredient = ({ ingredient, updateAmount }) => {
@@ -75,8 +75,8 @@ const Ingredient = ({ ingredient, updateAmount }) => {
       */}
       </AccordionSummary>
       <AccordionDetails>
-        <Box sx={{ mx: 2 }}>
-          <Stack direction='row' justifyContent='center' spacing={1}>
+        <Box sx={{ ml: 2 }}>
+          <Stack direction='row' justifyContent='space-between' spacing={3}>
             <Slider
               marks={[
                 {
@@ -93,18 +93,10 @@ const Ingredient = ({ ingredient, updateAmount }) => {
               value={sliderValue}
               onChange={handleSliderAmount}
             >
-          test
             </Slider>
-            <Button variant='contained' onClick={handleDeleteIngredient}>Delete</Button>
+            <Button variant='outlined' onClick={handleDeleteIngredient}><DeleteOutline /></Button>
           </Stack>
         </Box>
-        <br />
-        <Stack direction='row' justifyContent='center' spacing={1}>
-          <Button variant='outlined'>-10</Button>
-          <Button variant='outlined'>-1</Button>
-          <Button variant='outlined'>+1</Button>
-          <Button variant='outlined'>+10</Button>
-        </Stack>
       </AccordionDetails>
     </Accordion>
   )
