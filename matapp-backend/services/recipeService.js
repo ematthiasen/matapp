@@ -24,6 +24,33 @@ const createRecipe = async (recipeData) => {
 
   //Check for recipes with same name. If exists, add version number and try again.
   //@TODO: Implement
+  if (await Recipe.findOne({ title: recipeToCreate.title } )) {
+    logger.debug(`${recipeToCreate.title} already exists`)
+
+    //Deconstruct array, keep string in separate, and number separate
+    let title  = recipeToCreate.title.split(' ')
+    let iterationNumber = title.pop()
+    title = title.join(' ')
+    logger.debug('title', title)
+    logger.debug('iterationNumber:', iterationNumber)
+    if (!isNaN(iterationNumber)) {
+      logger.debug('Found number: ', iterationNumber)
+      //iterationNumber = Number(iterationNumber)
+      
+    } else {
+      title = `${recipeToCreate.title} -`
+      iterationNumber = 1
+    }
+
+    //That title already exists.
+    while (await Recipe.findOne({ title: `${title} ${iterationNumber}` })) {
+      iterationNumber++
+    }
+
+    recipeToCreate.title = `${title} ${iterationNumber}`
+    logger.debug(recipeToCreate.title + 'XXX')
+  }
+  
   const recipe = new Recipe(recipeToCreate)
   const savedRecipe = await recipe.save()
   return savedRecipe

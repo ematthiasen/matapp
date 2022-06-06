@@ -14,6 +14,8 @@ const Ingredient = ({ ingredient, updateAmount }) => {
 
   const [amount, setAmount] = useState(ingredient.amount)
   const [sliderValue, setSliderValue] = useState(ingredient.amount)
+  const [sliderMinValue, setSliderMinValue] = useState(ingredient.amount - 50 < 0 ? 0 : ingredient.amount - 50)
+  const [sliderMaxValue, setSliderMaxValue] = useState(Number(ingredient.amount) + 50)
 
   const increaseAmountByOne = () => {
     const currentAmount = amount
@@ -33,6 +35,14 @@ const Ingredient = ({ ingredient, updateAmount }) => {
   const handleSliderAmount = (event) => {
     setAmount(event.target.value)
     setSliderValue(event.target.value)
+    if (event.target.value === sliderMinValue) {
+      setSliderMinValue(event.target.value - 10 < 0 ? 0 : event.target.value - 10)
+      setSliderMaxValue(sliderMinValue + 100)
+    } else if (event.target.value === sliderMaxValue) {
+      setSliderMaxValue(sliderMaxValue + 10)
+      setSliderMinValue(sliderMinValue + 10)
+    }
+
     dispatch(updateIngredientAmount(ingredient.id, event.target.value))
   }
 
@@ -65,20 +75,29 @@ const Ingredient = ({ ingredient, updateAmount }) => {
       */}
       </AccordionSummary>
       <AccordionDetails>
-        <Slider
-          marks={[
-            {
-              value: 0,
-              label: '0'
-            },
-            {
-              value: 100,
-              label: '100 g'
-            }
-          ]}
-        >
+        <Box sx={{ mx: 2 }}>
+          <Stack direction='row' justifyContent='center' spacing={1}>
+            <Slider
+              marks={[
+                {
+                  value: sliderMinValue,
+                  label: `${sliderMinValue} ${ingredient.amountUnit}`
+                },
+                {
+                  value: sliderMaxValue,
+                  label: `${sliderMaxValue} ${ingredient.amountUnit}`
+                }
+              ]}
+              min={sliderMinValue}
+              max={sliderMaxValue}
+              value={sliderValue}
+              onChange={handleSliderAmount}
+            >
           test
-        </Slider>
+            </Slider>
+            <Button variant='contained' onClick={handleDeleteIngredient}>Delete</Button>
+          </Stack>
+        </Box>
         <br />
         <Stack direction='row' justifyContent='center' spacing={1}>
           <Button variant='outlined'>-10</Button>

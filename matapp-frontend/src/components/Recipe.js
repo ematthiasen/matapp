@@ -6,17 +6,20 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router'
 import { setActiveRecipe } from '../reducers/activeRecipeReducer'
 import recipeService from '../services/recipes'
-import { Box, Typography, Button, Stack, Accordion, AccordionSummary, Card, CardContent, Grid, AccordionDetails, Slider } from '@mui/material'
+import { Box, Typography, Button, Stack, Card, CardContent, Grid, Table, TableHead, TableBody, TableRow, TableCell, Input } from '@mui/material'
 import SaveIcon from '@mui/icons-material/Save'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useState } from 'react'
 
 const Recipe = () => {
   const activeRecipe = useSelector(state => state.activeRecipe)
   const fooditems = useSelector(state => state.fooditems)
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const [servings, setServings] = useState(1)
 
   let ingredients = null
   const id = useParams().id
@@ -97,67 +100,128 @@ const Recipe = () => {
   }
 
   return (
-    <Grid
-      sx={{
-        width: '50%', flexShrink: 1
-      }}>
-      <Typography
-        variant='h4'
-        sx={{
-        }}>
-        {activeRecipe.title}
-      </Typography>
-      <Stack direction='row' spacing={1}>
-        <Button variant='contained' startIcon={<CloudUploadIcon />} onClick={saveToBackend} >
+    <Grid container spacing={2} flexWrap='wrap' justifyContent='center' >
+      <Grid item xs={12}>
+        <Typography
+          variant='h4'
+          sx={{
+          }}>
+          {activeRecipe.title}
+        </Typography>
+        <Stack direction='row' spacing={1}>
+          <Button variant='contained' startIcon={<CloudUploadIcon />} onClick={saveToBackend} >
           Server
-        </Button>
-        <Button variant='outlined' startIcon={<SaveIcon />} onClick={localSave}>Local</Button>
-        <Button variant='outlined' startIcon={<DeleteIcon />} onClick={cancelAndReturn}>Delete</Button>
+          </Button>
+          <Button variant='outlined' startIcon={<SaveIcon />} onClick={localSave}>Local</Button>
+          <Button variant='outlined' startIcon={<DeleteIcon />} onClick={cancelAndReturn}>Discard changes</Button>
 
-      </Stack>
-      <br />
-      <Card variant='outlined'
-        sx={{
-          gridRow: '1',
-          gridColumn: 'span 2',
-        }}>
-        <CardContent>
-          <Typography variant='h5'>Ingredients</Typography>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-            >
-              Test
-            </AccordionSummary>
-            <AccordionDetails>
-              Lots of text here<br />
-              Lots of text here<br />
-              Lots of text here<br />
-              Lots of text here<br />
-              Lots of text here<br />
-              Lots of text here<br />
-              Lots of text here<br />
-              <Stack direction='row' spacing={2} sx={{ mb: 1 }} >
-                <Button variant='contained'>Shoop de do</Button>
-                <Slider></Slider>
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
-        </CardContent>
-      </Card>
-      {ingredients.map((ingredient) =>
-        <Ingredient key={ingredient.id} ingredient={ingredient} updateAmount={updateIngredientAmount} />
-      )}
-      <br />
-      <h2>Nutritional information</h2>
-      <table>
-        <thead><tr><td>Total calories</td><td>Total protein</td><td>Total carbs</td><td>Total fat</td></tr></thead>
-        <tbody><tr>
-          <td>{ingredientCalc.calcTotalCalOf(ingredients)}</td>
-          <td>{ingredientCalc.calcTotalProteinOf(ingredients)}</td>
-          <td>{ingredientCalc.calcTotalCarbsOf(ingredients)}</td>
-          <td>{ingredientCalc.calcTotalFatOf(ingredients)}</td></tr></tbody>
-      </table>
+        </Stack>
+      </Grid>
+      <Grid item xl={4} lg={4} md={6} sm={8} xs={12} >
+        <Card variant='outlined'
+          sx={{
+            gridRow: '1',
+            gridColumn: 'span 2',
+          }}>
+          <CardContent>
+            <Typography variant='h5'>Ingredients</Typography>
+
+          </CardContent>
+          <CardContent>
+            {ingredients.map((ingredient) =>
+              <Ingredient key={ingredient.id} ingredient={ingredient} updateAmount={updateIngredientAmount} />
+            )}
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xl={4} lg={4} md={6} sm={8} xs={12} >
+        <Card variant='outlined'
+          sx={{
+          }}
+        >
+          <CardContent>
+            <Typography variant='h5'>
+            Nutritional information
+            </Typography>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                  X
+                  </TableCell>
+                  <TableCell>
+                  Total
+                  </TableCell>
+                  <TableCell>
+                  Per serving
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                  Calories
+                  </TableCell>
+                  <TableCell>
+                    {ingredientCalc.calcTotalCalOf(ingredients)}
+                  </TableCell>
+                  <TableCell>
+                    {(ingredientCalc.calcTotalCalOf(ingredients) / servings).toFixed(0)} kcal
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                  Carbs
+                  </TableCell>
+                  <TableCell>
+                    {ingredientCalc.calcTotalCarbsOf(ingredients)}
+                  </TableCell>
+                  <TableCell>
+                    {(ingredientCalc.calcTotalCarbsOf(ingredients) / servings).toFixed(0)} g
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                  Fat
+                  </TableCell>
+                  <TableCell>
+                    {ingredientCalc.calcTotalFatOf(ingredients)}
+                  </TableCell>
+                  <TableCell>
+                    {(ingredientCalc.calcTotalFatOf(ingredients) / servings).toFixed(0)} g
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                  Protein
+                  </TableCell>
+                  <TableCell>
+                    {ingredientCalc.calcTotalProteinOf(ingredients)} g
+                  </TableCell>
+                  <TableCell>
+                    {(ingredientCalc.calcTotalProteinOf(ingredients) / servings).toFixed(0)} g
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+            <Typography variant='body1'>
+              Number of servings: {' '}
+              <Input value={servings} onChange={(event) => setServings(event.target.value)}
+                inputProps={{
+                  step: 1,
+                  min: 1,
+                  max: 100,
+                  type: 'number'
+                }}
+                sx={{
+                  maxWidth: 42
+                }}
+              />
+            </Typography>
+
+          </CardContent>
+        </Card>
+      </Grid>
     </Grid>
   )
 

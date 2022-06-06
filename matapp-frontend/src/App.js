@@ -15,7 +15,7 @@ import { initRecipes } from './reducers/recipeReducer'
 import { initFooditems } from './reducers/fooditemReducer'
 import { Switch, Route, Link, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
 import { setLoggedInUser, clearLoggedInUser } from './reducers/loggedInUserReducer'
-import { AppBar, Toolbar, IconButton, Container, Typography, Box, Menu, MenuItem } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Container, Typography, Box, Menu, MenuItem, Grid } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import HeaderBar from './components/HeaderBar'
@@ -105,12 +105,8 @@ function App() {
           </Route>
           <Route path='/fooditems/'>
             <div className='column'>
-              <Container>
-                <FooditemList />
-              </Container>
-              <Container>
-                <FooditemForm />
-              </Container>
+              <FooditemList />
+              <FooditemForm />
             </div>
           </Route>
           <Route path='/'>

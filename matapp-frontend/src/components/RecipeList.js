@@ -26,7 +26,8 @@ const RecipeList = () => {
     recipeWithoutId = { ...recipeWithoutId, template: false }
 
     const today = (new Date()).toLocaleDateString('no-no')
-    recipeWithoutId.title = `${recipeWithoutId.title} - ${today}`
+    //Handle naming in backend
+    //recipeWithoutId.title = `${recipeWithoutId.title} - ${today}`
     console.log(recipeWithoutId.name)
     try {
       const response = await recipeService.createRecipe(recipeWithoutId)
