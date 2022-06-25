@@ -19,8 +19,16 @@ export const addFooditem = (fooditem) => {
       return null
     }
     catch (error) {
+      console.log('testing', error.response.data.error)
       return error
     }
+  }
+}
+
+export const createFooditem = (fooditem) => {
+  return {
+    type: 'ADD_FOODITEM',
+    data: fooditem
   }
 }
 

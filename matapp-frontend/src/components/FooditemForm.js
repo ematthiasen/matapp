@@ -1,7 +1,10 @@
+import { Button, Card, CardContent, Grid, Stack, TextField, Typography } from '@mui/material'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 //import foodItemService from '../services/foodItem'
-import { addFooditem } from '../reducers/fooditemReducer'
+import { addFooditem, createFooditem } from '../reducers/fooditemReducer'
+import { createNotification } from '../reducers/notificationReducer'
+import fooditemService from '../services/fooditem'
 
 /*
 foodItem: {
@@ -15,37 +18,45 @@ foodItem: {
 const FooditemForm = () => {
   const dispatch = useDispatch()
 
-  const handleAddFoodItem = (event) => {
+  const handleAddFoodItem = async (event) => {
     event.preventDefault()
-    console.log('Adding food item', event.target.name.value)
+    console.log('Adding food item', event.target.food.value)
 
     const foodItem = {
-      name: event.target.name.value,
+      name: event.target.food.value,
       protein: event.target.protein.value,
       fat: event.target.fat.value,
       carbohydrate: event.target.carb.value
     }
-    dispatch(addFooditem(foodItem))
-  }
+    const returnValue = await dispatch(addFooditem(foodItem))
+    if (returnValue != null) {
+      //reducer encountered an error and returned it
+      //console.log('Error creating fooditem:', returnValue.response.data.error)
+      dispatch(createNotification(returnValue.response.data.error))
+      //@TODO: Add to error notification window
 
+    }
+
+  }
   return (
-    <div>
-      <h2>Create Food Item</h2>
-      <form onSubmit={handleAddFoodItem}>
-        <table><tbody>
-          <tr>
-            <td>Food name</td><td><input name='name'/></td>
-          </tr><tr>
-            <td>Protein</td><td><input name='protein' /> per 100g</td>
-          </tr><tr>
-            <td>Carbohydrates</td><td><input name='carb'/> per 100g</td>
-          </tr><tr>
-            <td>Fat</td><td><input name='fat'/> per 100g</td>
-          </tr>
-        </tbody></table>
-        <button type='submit'>Add new foodItem</button>
-      </form>
-    </div>
+    <Grid item xl={4} lg={4} md={6} sm={8} xs={12} >
+      <Card variant='outlined'>
+        <CardContent>
+          <Typography variant='h5'>
+              Create fooditem
+          </Typography>
+          <form onSubmit={handleAddFoodItem}>
+            <Stack direction='column' spacing={1} >
+              <TextField name='food' id='food-name' variant='outlined' label='Food name' />
+              <TextField name='carb' type='number' id='carbs' variant='outlined' label='Carbohydrates (per 100g)' />
+              <TextField name='fat' type='number' id='fat' variant='outlined' label='Fat (per 100g)' />
+              <TextField name='protein' type='number' id='protein' variant='outlined' label='Protein (per 100g)' />
+              <Button variant='contained' type='submit'>Create</Button>
+            </Stack>
+          </form>
+        </CardContent>
+      </Card>
+    </Grid>
   )
 }
 

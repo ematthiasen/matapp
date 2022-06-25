@@ -13,12 +13,13 @@ const getAll = () => {
   return axios.get(baseUrl)
 }
 
-const createFooditem = (newFooditem) => {
+const createFooditem = async (newFooditem) => {
   const config = {
     headers: { Authorization: token }
   }
   console.log('config:', config)
-  return axios.post(baseUrl, newFooditem, config)
+  const result = await axios.post(baseUrl, newFooditem, config)
+  return result
 }
 
 const updateFooditem = (id, changedFooditem) => {

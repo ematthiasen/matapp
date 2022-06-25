@@ -1,9 +1,8 @@
 import React from 'react'
-import { Alert } from 'react-bootstrap'
 import { useState } from 'react'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
-import { Button, ButtonGroup, IconButton } from '@mui/material'
+import { Box, Button, ButtonGroup, IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 
@@ -36,7 +35,7 @@ const RecipeListItem = ({ recipe, handleCloneRecipe, handleShowRecipe, handleDel
       </TableCell>
       <br/>
       {visibleDeleteField ?
-        <Alert variant='danger'>Really delete?<button onClick={() => handleDeleteRecipe(recipe)}>Yes</button><button onClick={() => setVisibleDeleteField(false)}>No</button> </Alert> :
+        <Box>Really delete?<button onClick={() => handleDeleteRecipe(recipe)}>Yes</button><button onClick={() => setVisibleDeleteField(false)}>No</button> </Box> :
         <></>
       }
     </TableRow>

@@ -54,6 +54,7 @@ const Ingredient = ({ ingredient, updateAmount }) => {
 
   const handleDeleteIngredient = () => {
     //deleteIngredient(ingredient.id)
+    console.log('attempt to delete ingredient', ingredient)
     dispatch(deleteIngredient(ingredient.id))
   }
 

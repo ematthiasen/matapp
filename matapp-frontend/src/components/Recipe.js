@@ -12,6 +12,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useState } from 'react'
+import IngredientForm from './IngredientForm'
 
 const Recipe = () => {
   const activeRecipe = useSelector(state => state.activeRecipe)
@@ -60,7 +61,8 @@ const Recipe = () => {
               id: 0
             },
           amount: 0,
-          amountUnit: 'g'
+          amountUnit: 'g',
+          id: ingredient.id
         }
       }
       else {
@@ -100,7 +102,7 @@ const Recipe = () => {
   }
 
   return (
-    <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
+    <>
       <Grid item xs={12}>
         <Typography
           variant='h4'
@@ -135,6 +137,7 @@ const Recipe = () => {
           </CardContent>
         </Card>
       </Grid>
+      <IngredientForm />
       <Grid item xl={4} lg={4} md={6} sm={8} xs={12} >
         <Card variant='outlined'
           sx={{
@@ -223,7 +226,7 @@ const Recipe = () => {
           </CardContent>
         </Card>
       </Grid>
-    </Grid>
+    </>
   )
 
 }

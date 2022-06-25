@@ -77,7 +77,7 @@ function App() {
         main: '#5e1b5a',
         dark: '#320030',
         contrastText: '#ffffff'
-      }
+      },
     }
   })
 
@@ -92,13 +92,10 @@ function App() {
         }
         <Switch>
           <Route path='/recipe/:id'>
-            <div className='column'>
+            <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
               <Recipe  />
-            </div>
-            <div className='column'>
-              <IngredientForm />
               <FooditemForm />
-            </div>
+            </Grid>
           </Route>
           <Route path='/recipe/'>
             <RecipeList />
