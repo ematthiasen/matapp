@@ -46,6 +46,7 @@ const RecipeList = () => {
       const response = await recipeService.deleteRecipe(recipe)
       console.log('deleted recipe', response)
       dispatch(deleteRecipe(recipe))
+      dispatch(createNotification('Recipe deleted'))
     } catch (error) {
       if (error.response.status === 401)
         dispatch(createNotification('Could not delete recipe: Not authorized'))
