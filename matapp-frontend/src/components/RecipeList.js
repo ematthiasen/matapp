@@ -7,6 +7,8 @@ import { addRecipe, deleteRecipe } from '../reducers/recipeReducer'
 import RecipeListItem from './RecipeListItem'
 import { Table, TableBody, TableHead, TableContainer, TableCell, TableRow } from '@mui/material'
 import Paper from '@mui/material/Paper'
+import { createNotification } from '../reducers/notificationReducer'
+
 
 const RecipeList = () => {
   const recipes = useSelector(state => state.recipes)
@@ -44,8 +46,12 @@ const RecipeList = () => {
       const response = await recipeService.deleteRecipe(recipe)
       console.log('deleted recipe', response)
       dispatch(deleteRecipe(recipe))
+      dispatch(createNotification('Recipe deleted'))
     } catch (error) {
-      console.log('Failed to delete recipe')
+      if (error.response.status === 401)
+        dispatch(createNotification('Could not delete recipe: Not authorized'))
+      else
+        dispatch(createNotification(error.response.data.error))
     }
   }
 
