@@ -253,7 +253,7 @@ export default function HeaderBar({ logout }) {
                 onClick={handleOpenLoginMenu}
                 sx={{
                   mr: 2,
-                  display: { xs: 'none', md: 'flex' },
+                  display: { xs: 'flex', md: 'flex' },
                   alignItems: 'center',
                   color: 'inherit',
                   textDecoration: 'none'
