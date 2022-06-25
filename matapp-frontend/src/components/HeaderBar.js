@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Tooltip, Card, CardContent, CardActionArea, CardActions, Popover, Alert } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Tooltip, Popover, Alert } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import { Typography } from '@mui/material'
@@ -91,6 +91,34 @@ export default function HeaderBar({ logout }) {
 
     console.log('submitted!')
   }
+
+  const handleGuestLogin = async (event) => {
+    event.preventDefault()
+    try {
+
+      const userdata = {
+        username: 'guest',
+        password: 'guest'
+      }
+      const receivedTokenAndUserdata = await loginService.loginUser(userdata)
+      //Error thrown if unsuccessful login.
+
+      dispatch(setLoggedInUser(receivedTokenAndUserdata))
+      window.localStorage.setItem('MatappSavedLocalUser', JSON.stringify(receivedTokenAndUserdata))
+      fooditemService.setToken(receivedTokenAndUserdata.token)
+      recipeService.setToken(receivedTokenAndUserdata.token)
+      //Cleanup
+      handleCloseLoginMenu()
+
+    } catch (error) {
+      //Show error in login window
+      console.log(error.response.data.error)
+      setAlert(error.response.data.error)
+    }
+
+    console.log('submitted!')
+  }
+
 
   return (
     <div>
@@ -291,7 +319,7 @@ export default function HeaderBar({ logout }) {
                     px: 2,
                     py: 1
                   }}>
-                  <TextField value={username} onChange={( event ) => setUsername(event.target.value)} controlId="formUsername" id="username" label="username" variant="filled" /><br />
+                  <TextField fullWidth value={username} onChange={( event ) => setUsername(event.target.value)} controlId="formUsername" id="username" label="username" variant="filled" /><br />
                 </Box>
                 <Box
                   sx={{
@@ -299,7 +327,7 @@ export default function HeaderBar({ logout }) {
                     py: 1
                   }}
                 >
-                  <TextField value={password} onChange={( event ) => setPassword(event.target.value)} id="password" label="password" variant="filled" type="password" />
+                  <TextField fullWidth value={password} onChange={( event ) => setPassword(event.target.value)} id="password" label="password" variant="filled" type="password" />
                 </Box>
                 {alert ? <Alert
                   severity='warning'
@@ -311,6 +339,15 @@ export default function HeaderBar({ logout }) {
                   sx={{
                     p:2
                   }}>
+
+                  <Button
+                    variant='contained'
+                    onClick={handleLogin}
+                    type='submit'
+                  >
+                  Login
+                  </Button>
+                  {' '}
                   <Button
                     onClick={handleCloseLoginMenu}
                     variant='contained'
@@ -319,12 +356,12 @@ export default function HeaderBar({ logout }) {
                   </Button>
                   {' '}
                   <Button
-                    variant='contained'
-                    onClick={handleLogin}
-                    type='submit'
+                    variant='outlined'
+                    onClick={handleGuestLogin}
                   >
-                  Login
+                  Login as guest
                   </Button>
+
                 </Box>
               </Popover>
             </Box>
