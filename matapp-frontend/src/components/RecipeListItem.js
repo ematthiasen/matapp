@@ -2,13 +2,27 @@ import React from 'react'
 import { useState } from 'react'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
-import { Box, Button, ButtonGroup, IconButton } from '@mui/material'
+import { Box, Button, ButtonGroup, IconButton, Popover, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 
 const RecipeListItem = ({ recipe, handleCloneRecipe, handleShowRecipe, handleDeleteRecipe }) => {
 
   const [ visibleDeleteField, setVisibleDeleteField ] = useState(false)
+  const [ anchorElConfirmDialog, setAnchorElConfirmDialog] = useState(null)
+
+  const handleOpenDeleteConfirmation = (event) => {
+    setAnchorElConfirmDialog(event.currentTarget)
+
+  }
+  const handleCloseDeleteConfirmation = () => {
+    setAnchorElConfirmDialog(null)
+  }
+
+  const handleDeleteRecipeClicked = () => {
+    setAnchorElConfirmDialog(null)
+    handleDeleteRecipe(recipe)
+  }
 
   return(
     <TableRow key={recipe.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -26,9 +40,54 @@ const RecipeListItem = ({ recipe, handleCloneRecipe, handleShowRecipe, handleDel
             :
             <>
               <Button variant='contained' onClick={() => handleShowRecipe(recipe)}>Edit</Button>
-              <IconButton aria-label="delete" color="primary" onClick={() => setVisibleDeleteField(true)}>
+              <IconButton aria-label="delete" color="primary" onClick={handleOpenDeleteConfirmation}>
                 <DeleteIcon />
               </IconButton>
+              <Popover
+                component="div"
+                id='confirm-dialog'
+                open={Boolean(anchorElConfirmDialog)}
+                anchorEl={anchorElConfirmDialog}
+                onClose={handleCloseDeleteConfirmation}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+              >
+                <Box
+                  sx={{
+                    alignContent: 'right',
+                    p: 1
+
+                  }}
+                >
+                  <Typography
+                    variant='body1'
+                    sx={{
+                      color: 'inherit',
+                      p: 2
+                    }}
+                  >
+                  Really delete?
+                  </Typography>
+                  <ButtonGroup>
+                    <Button
+                      variant='contained'
+                      color='warning'
+                      onClick={handleDeleteRecipeClicked}
+                    >
+                    Yes
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      onClick={handleCloseDeleteConfirmation}
+                    >
+                      Cancel
+                    </Button>
+                  </ButtonGroup>
+
+                </Box>
+              </Popover>
             </>
           }
         </ButtonGroup>
