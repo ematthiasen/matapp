@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Tooltip, Card, CardContent, CardActionArea, CardActions, Popover } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Button, Menu, MenuItem, Tooltip, Card, CardContent, CardActionArea, CardActions, Popover, Alert } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import { Typography } from '@mui/material'
@@ -14,7 +14,7 @@ import { setLoggedInUser } from '../reducers/loggedInUserReducer'
 import fooditemService from '../services/fooditem'
 import recipeService from '../services/recipes'
 
-export default function HeaderBar({ logout, showLogin }) {
+export default function HeaderBar({ logout }) {
 
   const [anchorElementUser, setAnchorElementUser] = useState(null)
   const [anchorElementNavigation, setAnchorElementNavigation] = useState(null)
@@ -22,6 +22,7 @@ export default function HeaderBar({ logout, showLogin }) {
   const loggedInUser = useSelector(state => state.loggedInUser)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [alert, setAlert] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -72,13 +73,20 @@ export default function HeaderBar({ logout, showLogin }) {
         password
       }
       const receivedTokenAndUserdata = await loginService.loginUser(userdata)
+      //Error thrown if unsuccessful login.
+
       console.log('token', receivedTokenAndUserdata)
       dispatch(setLoggedInUser(receivedTokenAndUserdata))
       window.localStorage.setItem('MatappSavedLocalUser', JSON.stringify(receivedTokenAndUserdata))
       fooditemService.setToken(receivedTokenAndUserdata.token)
       recipeService.setToken(receivedTokenAndUserdata.token)
+      //Cleanup
+      handleCloseLoginMenu()
+
     } catch (error) {
-      console.log(error)
+      //Show error in login window
+      console.log(error.response.data.error)
+      setAlert(error.response.data.error)
     }
 
     console.log('submitted!')
@@ -293,6 +301,12 @@ export default function HeaderBar({ logout, showLogin }) {
                 >
                   <TextField value={password} onChange={( event ) => setPassword(event.target.value)} id="password" label="password" variant="filled" type="password" />
                 </Box>
+                {alert ? <Alert
+                  severity='warning'
+                  onClose={() => setAlert(null)}
+                >{alert}</Alert> :
+                  <></>
+                }
                 <Box
                   sx={{
                     p:2
