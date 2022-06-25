@@ -1,34 +1,27 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import FooditemForm from './components/FooditemForm'
-import IngredientForm from './components/IngredientForm'
 import RecipeList from './components/RecipeList'
 import Recipe from './components/Recipe'
 import FooditemList from './components/FooditemList'
-import LoginForm from './components/LoginForm'
 import Notifications from './components/Notifications'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import recipeService from './services/recipes'
 import fooditemService from './services/fooditem'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { initRecipes } from './reducers/recipeReducer'
 import { initFooditems } from './reducers/fooditemReducer'
-import { Switch, Route, Link, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { setLoggedInUser, clearLoggedInUser } from './reducers/loggedInUserReducer'
-import { AppBar, Toolbar, IconButton, Container, Typography, Box, Menu, MenuItem, Grid } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import AccountCircle from '@mui/icons-material/AccountCircle'
+import { Grid } from '@mui/material'
 import HeaderBar from './components/HeaderBar'
 import { ThemeProvider } from '@mui/material'
 import { createTheme } from '@mui/material'
 
 function App() {
-  const fooditems = useSelector(state => state.fooditems)
-  const activeRecipe = useSelector(state => state.activeRecipe)
-  const loggedInUser = useSelector(state => state.loggedInUser)
+
   const dispatch = useDispatch()
 
-  const [showLoginForm, setShowLoginForm] = useState(false)
 
   const logout = () => {
     console.log('logout!')
@@ -84,12 +77,8 @@ function App() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <HeaderBar logout={logout} showLogin={setShowLoginForm} />
+        <HeaderBar logout={logout} />
         <Notifications />
-        {showLoginForm ?
-          <LoginForm hideLoginField={() => setShowLoginForm(false)}/> :
-          <></>
-        }
         <Switch>
           <Route path='/recipe/:id'>
             <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
