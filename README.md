@@ -1,26 +1,22 @@
+App running on:
+https://peaceful-waters-51071.herokuapp.com/
 
-
-How the app should work:
+Basic app concept:
 
 Database:
 FoodItems
 Recipes
-CookingLog
-Equipment
+Equipment (not yet implemented)
 
 Front page: list of recipes (collected from server)
 Recipes are the baseline recipes template recipe with
 - necessary ingredients
 - Helper functions
-  - Amount calculations based on cooking pot weight
+  - Amount calculations based on cooking pot weight (not yet implemented)
 
-CookingLog - List of dates when recipe has been cooked with notes 
-
-Button to create cooking instance from recipe or cooking log
-- New item created in CookingLog.
-Cooking page:
+Recipe page:
 - UI lists all ingredients and amounts.
   - Possible to adjust the amounts on the fly with buttons (not using keyboard)
-- UI lists instructions
-- UI has helper functions to calculate amount of foodItem based on equipment used to store/measure. for example add total weight of bowl + ingredients, adjust amount of ingredient to total weight - bowl weight
+- UI lists instructions (not yet implemented)
+- UI has helper functions to calculate amount of foodItem based on equipment used to store/measure. for example add total weight of bowl + ingredients, adjust amount of ingredient to total weight - bowl weight (not yet implemented)
 
