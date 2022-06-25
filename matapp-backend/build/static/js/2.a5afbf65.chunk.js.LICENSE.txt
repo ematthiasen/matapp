@@ -4,15 +4,6 @@ object-assign
 @license MIT
 */
 
-<<<<<<<< HEAD:matapp-backend/build/static/js/2.a5afbf65.chunk.js.LICENSE.txt
-========
-/*!
-  Copyright (c) 2018 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-
->>>>>>>> changeToMaterialUI:matapp-backend/build/static/js/2.bbb24fcd.chunk.js.LICENSE.txt
 /** @license MUI v5.6.1
  *
  * This source code is licensed under the MIT license found in the
