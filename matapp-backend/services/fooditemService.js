@@ -39,21 +39,32 @@ const deleteFooditem = async (fooditemId) => {
     logger.debug('checking', recipe)
     const result = recipe.ingredients.reduce((fooditemPresent, ingredient) => {
       logger.debug('checking ingredient', ingredient)
-
-      return ingredient.fooditemId === fooditemId ?  true :  false || fooditemPresent
+      logger.debug('comparing', ingredient.fooditemId.toString(), fooditemId)
+      //Don't compare object and string. Make sure both are strings!
+      return ingredient.fooditemId.toString() === fooditemId ?  true :  false || fooditemPresent
     }, false)
+    
     if (result) {
-      return instances.concat(recipe.title)
+      logger.debug('Ingredient precent in recipe ', recipe.title)
+      const newInstances = instances.concat(recipe.title)
+      logger.debug(newInstances)
+      return newInstances
+    } else {
+      logger.debug('did not find ingredient ', recipe.title)
+      return instances
     }
 
   }, [])
+  
   if (occurances.length > 0) {
     const error = new Error()
     error.name = 'ValidationError'
     error.message = `Fooditem is in use in recipe(s) ${occurances}`
+    throw error
   }
 
-
+  //Work in progress
+  //@BUG: <Deleted fooditem>, saving crashes. Check server.
 
 
   //const result = await Fooditem.findOneAndDelete({_id: fooditemId})

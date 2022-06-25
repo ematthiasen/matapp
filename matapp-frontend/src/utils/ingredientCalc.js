@@ -1,5 +1,5 @@
 const caloriesIn = (ingredient) => {
-  console.log('IngredientCalc - ingredient:', ingredient)
+  //console.log('IngredientCalc - ingredient:', ingredient)
   const calInFat = 9
   const calInProtein = 4
   const calInCarb = 4

@@ -1,33 +1,44 @@
 import React from 'react'
-import { Alert, Stack } from 'react-bootstrap'
 import { useState } from 'react'
-import { Button } from 'react-bootstrap'
-import { Row, Col } from 'react-bootstrap'
+import TableRow from '@mui/material/TableRow'
+import TableCell from '@mui/material/TableCell'
+import { Box, Button, ButtonGroup, IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+
 
 const RecipeListItem = ({ recipe, handleCloneRecipe, handleShowRecipe, handleDeleteRecipe }) => {
-/*@TODO: create a useState to toggle Alert component that shows yes/no buttons to confirm delete when it is pressed. Remove window.confirm from RecipeList delete function.
-*/
+
   const [ visibleDeleteField, setVisibleDeleteField ] = useState(false)
 
   return(
-    <Row md={4} key={recipe.id}>
-      <Col>{recipe.title}</Col>
-      <Col className="justify-content-left" md="auto"><Stack direction="horizontal"><Button variant='secondary' onClick={() => handleCloneRecipe(recipe) }>Make a copy and edit</Button>
-        {recipe.template ?
-          <>
-          </>
-          :
-          <>
-            <Button onClick={() => handleShowRecipe(recipe)}>Set Active</Button>
-            <Button onClick={() => setVisibleDeleteField(true)}>Delete</Button>
-          </>
-        }
-      </Stack></Col><br/>
+    <TableRow key={recipe.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+      <TableCell component="th" scope="row">{recipe.title}</TableCell>
+      <TableCell>{recipe.date}</TableCell>
+      <TableCell align='right' size='small'>
+        <ButtonGroup><Button variant='contained' onClick={() => handleCloneRecipe(recipe) }>Copy</Button>
+          {recipe.template ?
+            <>
+              <Button variant='outlined'>Edit</Button>
+              <IconButton aria-label="delete" disabled>
+                <DeleteIcon />
+              </IconButton>
+            </>
+            :
+            <>
+              <Button variant='contained' onClick={() => handleShowRecipe(recipe)}>Edit</Button>
+              <IconButton aria-label="delete" color="primary" onClick={() => setVisibleDeleteField(true)}>
+                <DeleteIcon />
+              </IconButton>
+            </>
+          }
+        </ButtonGroup>
+      </TableCell>
+      <br/>
       {visibleDeleteField ?
-        <Alert variant='danger'>Really delete?<button onClick={() => handleDeleteRecipe(recipe)}>Yes</button><button onClick={() => setVisibleDeleteField(false)}>No</button> </Alert> :
+        <Box>Really delete?<button onClick={() => handleDeleteRecipe(recipe)}>Yes</button><button onClick={() => setVisibleDeleteField(false)}>No</button> </Box> :
         <></>
       }
-    </Row>
+    </TableRow>
   )
 }
 

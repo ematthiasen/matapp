@@ -8,15 +8,19 @@ import FooditemList from './components/FooditemList'
 import LoginForm from './components/LoginForm'
 import Notifications from './components/Notifications'
 import { useEffect, useState } from 'react'
-import './index.css'
 import recipeService from './services/recipes'
 import fooditemService from './services/fooditem'
 import { useSelector, useDispatch } from 'react-redux'
 import { initRecipes } from './reducers/recipeReducer'
 import { initFooditems } from './reducers/fooditemReducer'
 import { Switch, Route, Link, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
-import { Navbar, Button, Nav, Container } from 'react-bootstrap'
 import { setLoggedInUser, clearLoggedInUser } from './reducers/loggedInUserReducer'
+import { AppBar, Toolbar, IconButton, Container, Typography, Box, Menu, MenuItem, Grid } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import AccountCircle from '@mui/icons-material/AccountCircle'
+import HeaderBar from './components/HeaderBar'
+import { ThemeProvider } from '@mui/material'
+import { createTheme } from '@mui/material'
 
 function App() {
   const fooditems = useSelector(state => state.fooditems)
@@ -60,68 +64,54 @@ function App() {
       })
   }, [dispatch])
 
-  const Headers = () => (
-    <div>
-      <Container><h1>Recipe stuff</h1></Container>
-      <Navbar collapseOnSelect expand='lg' bg='primary' variant='dark'>
-        <Navbar.Toggle aria-controls='navbar' />
-        <Navbar.Collapse id='navbar'>
-          <Nav className='mr-auto'>
-            <Nav.Link href='/' as={Link} to='/'>
-              Home
-            </Nav.Link>
-            <Nav.Link href='/fooditems/' as={Link} to='/fooditems'>
-              Fooditems
-            </Nav.Link>
-          </Nav>
-          <Nav>
-            { loggedInUser
-              ? <><Navbar.Text>user {loggedInUser.username} logged in</Navbar.Text><Nav.Link to='' onClick={logout}>Logout</Nav.Link></>
-              : <Nav.Link to='' onClick={() => setShowLoginForm(true)}>show Login form</Nav.Link>
-            }
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    </div>
-
-  )
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#4c8c4a',
+        main: '#1a8145',
+        dark: '#003300',
+        contrastText: '#ffffff'
+      },
+      secondary: {
+        light: '#8d4887',
+        main: '#5e1b5a',
+        dark: '#320030',
+        contrastText: '#ffffff'
+      },
+    }
+  })
 
   return (
-    <Container>
-      <Headers />
-      <Notifications />
-      {showLoginForm ?
-        <LoginForm hideLoginField={() => setShowLoginForm(false)}/> :
-        <></>
-      }
-      <Switch>
-        <Route path='/recipe/:id'>
-          <div className='column'>
-            <Recipe  />
-          </div>
-          <div className='column'>
-            <IngredientForm />
-            <FooditemForm />
-          </div>
-        </Route>
-        <Route path='/recipe/'>
-          <RecipeList />
-        </Route>
-        <Route path='/fooditems/'>
-          <div className='column'>
-            <Container>
-              <FooditemList />
-            </Container>
-            <Container>
+    <div>
+      <ThemeProvider theme={theme}>
+        <HeaderBar logout={logout} showLogin={setShowLoginForm} />
+        <Notifications />
+        {showLoginForm ?
+          <LoginForm hideLoginField={() => setShowLoginForm(false)}/> :
+          <></>
+        }
+        <Switch>
+          <Route path='/recipe/:id'>
+            <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
+              <Recipe  />
               <FooditemForm />
-            </Container>
-          </div>
-        </Route>
-        <Route path='/'>
-          <RecipeList />
-        </Route>
-      </Switch>
-    </Container>
+            </Grid>
+          </Route>
+          <Route path='/recipe/'>
+            <RecipeList />
+          </Route>
+          <Route path='/fooditems/'>
+            <div className='column'>
+              <FooditemList />
+              <FooditemForm />
+            </div>
+          </Route>
+          <Route path='/'>
+            <RecipeList />
+          </Route>
+        </Switch>
+      </ThemeProvider>
+    </div>
   )
 }
 

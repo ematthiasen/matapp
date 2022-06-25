@@ -1,8 +1,10 @@
 import React from 'react'
-import '../index.css'
 import { useState } from 'react'
 import { updateIngredientAmount, deleteIngredient } from '../reducers/activeRecipeReducer'
 import { useDispatch } from 'react-redux'
+import { Accordion, Box, AccordionSummary, AccordionDetails, Slider, Button, Typography, Stack } from '@mui/material'
+import DeleteOutline from '@mui/icons-material/Delete'
+
 
 const Ingredient = ({ ingredient, updateAmount }) => {
   const dispatch = useDispatch()
@@ -10,9 +12,10 @@ const Ingredient = ({ ingredient, updateAmount }) => {
 
   // eslint-disable-next-line no-unused-vars
 
-  const [editMode, setEditMode] = useState(false)
   const [amount, setAmount] = useState(ingredient.amount)
   const [sliderValue, setSliderValue] = useState(ingredient.amount)
+  const [sliderMinValue, setSliderMinValue] = useState(ingredient.amount - 50 < 0 ? 0 : ingredient.amount - 50)
+  const [sliderMaxValue, setSliderMaxValue] = useState(Number(ingredient.amount) + 50)
 
   const increaseAmountByOne = () => {
     const currentAmount = amount
@@ -32,6 +35,14 @@ const Ingredient = ({ ingredient, updateAmount }) => {
   const handleSliderAmount = (event) => {
     setAmount(event.target.value)
     setSliderValue(event.target.value)
+    if (event.target.value === sliderMinValue) {
+      setSliderMinValue(event.target.value - 10 < 0 ? 0 : event.target.value - 10)
+      setSliderMaxValue(sliderMinValue + 100)
+    } else if (event.target.value === sliderMaxValue) {
+      setSliderMaxValue(sliderMaxValue + 10)
+      setSliderMinValue(sliderMinValue + 10)
+    }
+
     dispatch(updateIngredientAmount(ingredient.id, event.target.value))
   }
 
@@ -43,27 +54,52 @@ const Ingredient = ({ ingredient, updateAmount }) => {
 
   const handleDeleteIngredient = () => {
     //deleteIngredient(ingredient.id)
+    console.log('attempt to delete ingredient', ingredient)
     dispatch(deleteIngredient(ingredient.id))
   }
 
-  if(!editMode) return (
-    <tr onClick={() => setEditMode(!editMode)}>
-      <td style={{ width: 100 }}>{ingredient.fooditem.name}</td>
-      <td style={{ width: 120 }}>{ingredient.amount} {ingredient.amountUnit}</td>
-      <td></td>
-    </tr>
-  )
-  else return (
-    <tr>
-      <td style={{ width: 100 }} onClick={() => setEditMode(!editMode)}>{ingredient.fooditem.name}</td>
-      <td><input value={amount} size='10' onChange={({ target }) => handleAmountUpdate(target.value)} />{ingredient.amountUnit}</td>
-      <td>
-        <button onClick={() => increaseAmountByOne()}>Increase</button>
-        <button onClick={() => decreaseAmountByOne()}>Decrease</button>
-        <input value={sliderValue} type='range' min='0' max='1000' onChange={handleSliderAmount}></input>
-        <button onClick={() => handleDeleteIngredient()}>Delete</button>
-      </td>
-    </tr>
+  return (
+    <Accordion>
+      <AccordionSummary>
+        <Stack direction='row'  flexGrow={1} justifyContent='space-between'>
+          <Typography sx={{ display: 'inline-flex' }}>{ingredient.fooditem.name}</Typography>
+          <Typography sx={{ display: 'flex', color: 'text.secondary', }}>{ingredient.amount} {ingredient.amountUnit}</Typography>
+        </Stack>
+        {/*<td style={{ width: 100 }} onClick={() => setEditMode(!editMode)}>{ingredient.fooditem.name}</td>
+        <td><input value={amount} size='10' onChange={({ target }) => handleAmountUpdate(target.value)} />{ingredient.amountUnit}</td>
+        <td>
+          <button onClick={() => increaseAmountByOne()}>Increase</button>
+          <button onClick={() => decreaseAmountByOne()}>Decrease</button>
+          <input value={sliderValue} type='range' min='0' max='1000' onChange={handleSliderAmount}></input>
+          <button onClick={() => handleDeleteIngredient()}>Delete</button>
+        </td>
+      */}
+      </AccordionSummary>
+      <AccordionDetails>
+        <Box sx={{ ml: 2 }}>
+          <Stack direction='row' justifyContent='space-between' spacing={3}>
+            <Slider
+              marks={[
+                {
+                  value: sliderMinValue,
+                  label: `${sliderMinValue} ${ingredient.amountUnit}`
+                },
+                {
+                  value: sliderMaxValue,
+                  label: `${sliderMaxValue} ${ingredient.amountUnit}`
+                }
+              ]}
+              min={sliderMinValue}
+              max={sliderMaxValue}
+              value={sliderValue}
+              onChange={handleSliderAmount}
+            >
+            </Slider>
+            <Button variant='outlined' onClick={handleDeleteIngredient}><DeleteOutline /></Button>
+          </Stack>
+        </Box>
+      </AccordionDetails>
+    </Accordion>
   )
 }
 export default Ingredient

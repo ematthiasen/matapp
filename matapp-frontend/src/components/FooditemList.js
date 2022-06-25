@@ -1,8 +1,9 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteFooditem } from '../reducers/fooditemReducer'
-import { Container, Row, Col, Button } from 'react-bootstrap'
 import { createNotification } from '../reducers/notificationReducer'
+import { Card, CardContent, Table, TableBody, TableCell, TableHead, TableRow, Typography, Grid, Button } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/DeleteForeverOutlined'
 
 const FooditemList = () => {
   const fooditemList = useSelector(state => state.fooditems)
@@ -23,29 +24,47 @@ const FooditemList = () => {
   }
 
   return (
-    <Container>
-      <h2>Fooditems</h2>
-      <Row>
-        <Col xs lg='2'><b>Name</b></Col><Col align='left'>Protein</Col><Col>Carbs</Col><Col>Fat</Col><Col>Actions</Col>
-      </Row>
-      {fooditemList.map(fooditem =>
-        <Row key={fooditem.id}>
-          <Col>{fooditem.name}</Col>
-          <Col>{fooditem.protein}</Col>
-          <Col>{fooditem.carbohydrate}</Col>
-          <Col>{fooditem.fat}</Col>
-          <Col><Button onClick={() => handleDelete(fooditem.id)}>Delete</Button></Col>
-        </Row>
-      )}
-
-      <ul>
-        {fooditemList.map(fooditem =>
-          <li key={fooditem.id}>{fooditem.name} <button onClick={() => handleDelete(fooditem.id)}>Delete</button>
-
-          </li>
-        )}
-      </ul>
-    </Container>
+    <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
+      <Grid item xl={6} lg={8} md={10} sm={12}>
+        <Typography variant='h4' sx={{ m: 2 }}>Fooditems</Typography>
+        <Card>
+          <CardContent>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                Name
+                  </TableCell>
+                  <TableCell>
+              Protein
+                  </TableCell>
+                  <TableCell>
+                Carbs
+                  </TableCell>
+                  <TableCell>
+                Fat
+                  </TableCell>
+                  <TableCell>
+                Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {fooditemList.map(fooditem =>
+                  <TableRow key={fooditem.id}>
+                    <TableCell>{fooditem.name}</TableCell>
+                    <TableCell>{fooditem.protein}</TableCell>
+                    <TableCell>{fooditem.carbohydrate}</TableCell>
+                    <TableCell>{fooditem.fat}</TableCell>
+                    <TableCell><Button variant='outlined' onClick={() => handleDelete(fooditem.id)}><DeleteIcon /></Button></TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   )
 }
 
