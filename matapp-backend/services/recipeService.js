@@ -3,6 +3,7 @@ const logger = require('../utils/logger')
 const ingredientSchema = require('../models/ingredient')
 const mongoose = require('mongoose')
 const dateFormatter = require('../utils/dateFormatter')
+const recipe = require('../models/recipe')
 
 const getOneRecipe = async (recipeId) => {
   const oneRecipe = await Recipe.findById(recipeId)
@@ -62,14 +63,11 @@ const updateRecipe = async (recipeId, recipeData) => {
   const recipeToUpdate = await Recipe.findById(recipeId)
 
   const updatedRecipe = {
-    ...recipeToUpdate,
     title: recipeData.title ? recipeData.title : recipeToUpdate.title,
     template: recipeData.template ? recipeData.template : recipeToUpdate.template
   }
-  logger.debug(updatedRecipe)
-
-
-  const savedRecipe = await Recipe.findByIdAndUpdate(recipeId, updatedRecipe, {new: true, runValidators: true})
+  
+  const savedRecipe = await Recipe.findByIdAndUpdate(recipeId, updatedRecipe, { new:true, runValidators: true, context: 'query' })
   return savedRecipe  
 }
 
