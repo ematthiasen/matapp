@@ -6,13 +6,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router'
 import { setActiveRecipe } from '../reducers/activeRecipeReducer'
 import recipeService from '../services/recipes'
-import { Box, Typography, Button, Stack, Card, CardContent, Grid, Table, TableHead, TableBody, TableRow, TableCell, Input } from '@mui/material'
+import { Box, Typography, Button, Stack, Card, CardContent, Grid, Table, TableHead, TableBody, TableRow, TableCell, Input, TextField, InputAdornment, OutlinedInput } from '@mui/material'
 import SaveIcon from '@mui/icons-material/Save'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useState } from 'react'
 import IngredientForm from './IngredientForm'
+import EditIcon from '@mui/icons-material/EditOutlined'
 
 const Recipe = () => {
   const activeRecipe = useSelector(state => state.activeRecipe)
@@ -21,6 +22,8 @@ const Recipe = () => {
   const history = useHistory()
 
   const [servings, setServings] = useState(1)
+
+  const [editTitle, setEditTitle] = useState(false)
 
   let ingredients = null
   const id = useParams().id
@@ -104,13 +107,31 @@ const Recipe = () => {
   return (
     <>
       <Grid item xs={12}>
-        <Typography
-          variant='h4'
-          sx={{
-            m: 2
-          }}>
-          {activeRecipe.title}
-        </Typography>
+        {editTitle ?
+          <form onSubmit={ (event) => { event.preventDefault(); console.log(event.target.title.value); activeRecipe.title = event.target.title.value; setEditTitle(false) }}>
+            <OutlinedInput
+              size='small'
+              id='recipe-title'
+              inputProps={{
+                style: { fontSize: 35 },
+              }}
+              endAdornment={<InputAdornment position="end"><Button type='submit'><SaveIcon /></Button></InputAdornment>}
+              defaultValue={activeRecipe.title}
+              name='title'
+            />
+          </form> :
+          <Typography
+            variant='h4'
+            sx={{
+              m: 2
+            }}>
+            {activeRecipe.title}
+            <Button onClick={() => setEditTitle(!editTitle)}><EditIcon /></Button>
+          </Typography>
+        }
+
+
+
         <Stack direction='row' spacing={1}>
           <Button variant='contained' startIcon={<CloudUploadIcon />} onClick={saveToBackend} >
           Server
