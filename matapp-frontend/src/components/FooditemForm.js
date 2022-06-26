@@ -34,7 +34,12 @@ const FooditemForm = () => {
       //console.log('Error creating fooditem:', returnValue.response.data.error)
       dispatch(createNotification(returnValue.response.data.error))
       //@TODO: Add to error notification window
-
+    } else {
+      //zero out form
+      event.target.food.value = ''
+      event.target.carbs.value = ''
+      event.target.protein.value = ''
+      event.target.fat.value = ''
     }
 
   }
@@ -48,9 +53,9 @@ const FooditemForm = () => {
           <form onSubmit={handleAddFoodItem}>
             <Stack direction='column' spacing={1} >
               <TextField name='food' id='food-name' variant='outlined' label='Food name' />
-              <TextField name='carb' type='number' id='carbs' variant='outlined' label='Carbohydrates (per 100g)' />
-              <TextField name='fat' type='number' id='fat' variant='outlined' label='Fat (per 100g)' />
-              <TextField name='protein' type='number' id='protein' variant='outlined' label='Protein (per 100g)' />
+              <TextField name='carb' inputProps={{ inputMode: 'numeric', pattern: '([0-9]+\\[.,]?[0-9]*|\\[.,][0-9]+)' }} id='carbs' variant='outlined' label='Carbohydrates (per 100g)' />
+              <TextField name='fat' inputProps={{ inputMode: 'numeric', pattern: '([0-9]+\\[.,]?[0-9]*|\\[.,][0-9]+)' }} id='fat' variant='outlined' label='Fat (per 100g)' />
+              <TextField name='protein' inputProps={{ inputMode: 'numeric', pattern: '([0-9]+\\[.,]?[0-9]*|\\[.,][0-9]+)' }} id='protein' variant='outlined' label='Protein (per 100g)' />
               <Button variant='contained' type='submit'>Create</Button>
             </Stack>
           </form>

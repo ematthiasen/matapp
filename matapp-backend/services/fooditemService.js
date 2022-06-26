@@ -13,11 +13,12 @@ const createNewFooditem = async (newFooditem) => {
   logger.debug('fooditem received: ', newFooditem)
   //validation using schema
   //takes care of undefined 
+
   const fooditem = new Fooditem({
     name: newFooditem.name,
-    protein: newFooditem.protein,
-    fat: newFooditem.fat,
-    carbohydrate: newFooditem.carbohydrate
+    protein: newFooditem.protein.replace(',', '.'),
+    fat: newFooditem.fat.replace(',', '.'),
+    carbohydrate: newFooditem.carbohydrate.replace(',', '.')
   })
 
   const savedFooditem = await fooditem.save()
