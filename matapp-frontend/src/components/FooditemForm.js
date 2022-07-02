@@ -1,7 +1,6 @@
 import { Button, Card, CardContent, Grid, Stack, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 //import foodItemService from '../services/foodItem'
 import { addFooditem, createFooditem } from '../reducers/fooditemReducer'
 import { createNotification } from '../reducers/notificationReducer'
@@ -18,14 +17,6 @@ foodItem: {
 */
 const FooditemForm = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
-  const [ fooditemNameFromState, setFooditemNameFromState ] = useState('')
-
-  if ( window.history.state != null )
-    if (window.history.state.state != null)
-      if (window.history.state.state.label != null )
-        if (fooditemNameFromState === '')
-          setFooditemNameFromState(window.history.state.state.label)
 
   const handleAddFoodItem = async (event) => {
     event.preventDefault()
@@ -50,13 +41,8 @@ const FooditemForm = () => {
       event.target.protein.value = ''
       event.target.fat.value = ''
     }
-  }
-
-  const cancelAddFooditem = () => {
-    history.goBack()
 
   }
-
   return (
     <Grid item xl={4} lg={4} md={6} sm={8} xs={12} >
       <Card variant='outlined'>
@@ -64,14 +50,13 @@ const FooditemForm = () => {
           <Typography variant='h5'>
               Create fooditem
           </Typography>
-          <form onSubmit={handleAddFoodItem} onReset={cancelAddFooditem}>
+          <form onSubmit={handleAddFoodItem}>
             <Stack direction='column' spacing={1} >
-              <TextField name='food' id='food-name' variant='outlined' label='Food name' defaultValue={fooditemNameFromState} />
+              <TextField name='food' id='food-name' variant='outlined' label='Food name' />
               <TextField name='carb' inputProps={{ inputMode: 'numeric', pattern: '([0-9]+\\[.,]?[0-9]*|\\[.,][0-9]+)' }} id='carbs' variant='outlined' label='Carbohydrates (per 100g)' />
               <TextField name='fat' inputProps={{ inputMode: 'numeric', pattern: '([0-9]+\\[.,]?[0-9]*|\\[.,][0-9]+)' }} id='fat' variant='outlined' label='Fat (per 100g)' />
               <TextField name='protein' inputProps={{ inputMode: 'numeric', pattern: '([0-9]+\\[.,]?[0-9]*|\\[.,][0-9]+)' }} id='protein' variant='outlined' label='Protein (per 100g)' />
               <Button variant='contained' type='submit'>Create</Button>
-              <Button variant='outlined' type='reset' >Cancel</Button>
             </Stack>
           </form>
         </CardContent>

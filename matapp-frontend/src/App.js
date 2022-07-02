@@ -83,19 +83,16 @@ function App() {
           <Route path='/recipe/:id'>
             <Grid container spacing={2} flexWrap='wrap' justifyContent='flex-start' >
               <Recipe  />
+              <FooditemForm />
             </Grid>
           </Route>
           <Route path='/recipe/'>
             <RecipeList />
           </Route>
-          <Route path='/fooditems/create/'>
-            <div className='column'>
-              <FooditemForm />
-            </div>
-          </Route>
           <Route path='/fooditems/'>
             <div className='column'>
               <FooditemList />
+              <FooditemForm />
             </div>
           </Route>
           <Route path='/'>
