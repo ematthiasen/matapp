@@ -1,4 +1,4 @@
-import { Autocomplete, Card, CardContent, Grid, Typography, TextField, Stack, FormControl, Select, MenuItem, Button } from '@mui/material'
+import { Autocomplete, Card, CardContent, Grid, Typography, TextField, Stack, FormControl, Select, MenuItem, Button, AccordionSummary, Accordion, AccordionDetails, Collapse } from '@mui/material'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addIngredientToRecipe } from '../reducers/activeRecipeReducer'
@@ -8,6 +8,8 @@ const IngredientForm = () => {
   const dispatch = useDispatch()
 
   const [fooditemObject, setFooditemObject] = useState(null)
+
+  const [showForm, setShowForm] = useState(false)
 
   //GOing to need access to food Items
   //and callback function to create Ingredient
@@ -45,15 +47,22 @@ const IngredientForm = () => {
 
   return (
     <>
-      <Grid item xl={4} lg={4} md={6} sm={8} xs={12} >
-        <Card variant='outlined'>
-          <CardContent>
-            <Typography variant='h5'>
+      <Card variant='outlined'>
+        <CardContent>
+          <form onSubmit={addIngredient}>
+            <Typography variant='body1' onClick={() => setShowForm(!showForm)}>
           Add Ingredient
             </Typography>
-            <form onSubmit={addIngredient}>
+            <Autocomplete
+              disablePortal
+              id='fooditemAutocomplete'
+              options={autocompleteOptions}
+              onOpen={() => setShowForm(true)}
+              onChange={ (e, obj) => setFooditemObject(obj)}
+              renderInput={ (params) => <TextField {...params} name='fooditem' />}
+            />
+            <Collapse in={showForm} timeout='auto' unmountOnExit >
               <FormControl>
-
                 <Autocomplete
                   disablePortal
                   id='fooditemAutocomplete'
@@ -70,11 +79,11 @@ const IngredientForm = () => {
                 </Select>
                 <Button type='submit' variant='contained'>Add</Button>
               </FormControl>
-            </form>
-          </CardContent>
+            </Collapse>
+          </form>
+        </CardContent>
 
-        </Card>
-      </Grid>
+      </Card>
     </>
   )
 }

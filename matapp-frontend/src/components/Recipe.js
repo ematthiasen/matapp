@@ -195,13 +195,14 @@ const Recipe = () => {
 
           </CardContent>
           <CardContent>
+            <IngredientForm />
             {ingredients.map((ingredient) =>
               <Ingredient key={ingredient.id} ingredient={ingredient} updateAmount={updateIngredientAmount} />
             )}
           </CardContent>
         </Card>
       </Grid>
-      <IngredientForm />
+      {/* <IngredientForm /> */}
       <Grid item xl={4} lg={4} md={6} sm={8} xs={12} >
         <Card variant='outlined'
           sx={{
