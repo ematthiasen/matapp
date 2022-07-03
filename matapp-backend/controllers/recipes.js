@@ -19,7 +19,10 @@ recipesRouter.put('/:id', userAuthenticator, async (request, response) => {
   //TODO: Only modify name and/or template, not ingredients.
   //Ingredients modified through ingredients
   const updateRecipeId = request.params.id
-  const updatedRecipe = await recipeService.updateRecipe(updateRecipeId, request.body)
+
+  // Send userAuthenticator data to service, and let service handle it.
+
+  const updatedRecipe = await recipeService.updateRecipe(updateRecipeId, request.body, request.authorizedUser)
   //const updatedRecipe = await Recipe.findByIdAndUpdate(updateRecipeId, request.body, { new: true, runValidators: true })
   response.json(updatedRecipe)
 })
@@ -28,7 +31,9 @@ recipesRouter.put('/:id', userAuthenticator, async (request, response) => {
 recipesRouter.post('/', userAuthenticator, async (request, response) => {
   console.log('New recipe received: ', request.body)
   
-  const createdRecipe = await recipeService.createRecipe(request.body)
+  //Add user id to new recipe
+
+  const createdRecipe = await recipeService.createRecipe(request.body, request.authorizedUser)
   return response.json(createdRecipe)
   //const recipe = new Recipe(request.body)
   //const savedRecipe = await recipe.save()
@@ -38,7 +43,7 @@ recipesRouter.post('/', userAuthenticator, async (request, response) => {
 //@TODO: Update to use recipeService
 recipesRouter.delete('/:id', userAuthenticator, async (request, response) => {
   logger.debug('Received request to delete recipe id', request.params.id )
-  const result = await Recipe.findByIdAndRemove(request.params.id)
+  const result = await recipeService.deleteRecipe(request.params.id, request.authorizedUser)
   return response.status(200).json(result)
 })
 
@@ -56,14 +61,14 @@ recipesRouter.delete('/:recipeId/ingredients/:ingredientId', userAuthenticator, 
   //delete one ingredient in the recipe
   logger.debug('Recipeid', request.params.recipeId, 'ingredient to delete', request.params.ingredientId, request.body)
 
-  const returnObject = await recipeService.deleteIngredientInRecipe(request.params.recipeId, request.params.ingredientId)
+  const returnObject = await recipeService.deleteIngredientInRecipe(request.params.recipeId, request.params.ingredientId, request.authorizedUser)
   return response.status(200).json(returnObject)
 })
 
 recipesRouter.post('/:id/ingredients', userAuthenticator, async (request, response) => {
   //add an ingredient to the recipe
   logger.debug('Recipeid', request.params.id, 'ingredient to add', request.body)
-  const returnObject = await recipeService.addIngredientToRecipe(request.params.id, request.body)
+  const returnObject = await recipeService.addIngredientToRecipe(request.params.id, request.body, request.authorizedUser)
   if (returnObject) {
     //for now return success
     return response.status(200).json(returnObject)
@@ -76,7 +81,7 @@ recipesRouter.post('/:id/ingredients', userAuthenticator, async (request, respon
 recipesRouter.put('/:id/ingredients', userAuthenticator, async (request, response) => {
   logger.debug('RecipeId', request.params.id, 'new ingredients list', request.body)
 
-  const returnObject = await recipeService.updateIngredientList(request.params.id, request.body)
+  const returnObject = await recipeService.updateIngredientList(request.params.id, request.body, request.authorizedUser)
   return response.status(200).json(returnObject)
 })
 

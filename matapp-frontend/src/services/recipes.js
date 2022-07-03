@@ -26,6 +26,14 @@ const createRecipe = (newRecipe) => {
 }
 
 const updateRecipe = (changedRecipe) => {
+  if (token === null) {
+    //No authorization
+    const error = new Error()
+    error.name = 'AuthenticationError'
+    error.message = 'You need to be logged in in order to save to server'
+    throw error
+  }
+
   const config = {
     headers: { Authorization: token }
   }
@@ -34,6 +42,14 @@ const updateRecipe = (changedRecipe) => {
 }
 
 const deleteRecipe = (recipeToDelete) => {
+  if (token === null) {
+    //No authorization
+    const error = new Error()
+    error.name = 'AuthenticationError'
+    error.message = 'You need to be logged in in order to delete recipe'
+    throw error
+  }
+
   const config = {
     headers: { Authorization: token }
   }
@@ -41,6 +57,14 @@ const deleteRecipe = (recipeToDelete) => {
 }
 
 const addIngredientToRecipe = (recipe, ingredient) => {
+  if (token === null) {
+    //No authorization
+    const error = new Error()
+    error.name = 'AuthenticationError'
+    error.message = 'You need to be logged in in order to modify a recipe'
+    throw error
+  }
+
   const config = {
     headers: { Authorization: token }
   }
@@ -49,6 +73,14 @@ const addIngredientToRecipe = (recipe, ingredient) => {
 }
 
 const updateAllIngredients = (recipe, ingredientsList) => {
+  if (token === null) {
+    //No authorization
+    const error = new Error()
+    error.name = 'AuthenticationError'
+    error.message = 'You need to be logged in in order to modify a recipe'
+    throw error
+  }
+
   const config = {
     headers: { Authorization: token }
   }
@@ -56,6 +88,14 @@ const updateAllIngredients = (recipe, ingredientsList) => {
 }
 
 const updateIngredientInRecipe = (recipe, ingredient) => {
+  if (token === null) {
+    //No authorization
+    const error = new Error()
+    error.name = 'AuthenticationError'
+    error.message = 'You need to be logged in in order to modify a recipe'
+    throw error
+  }
+
   const config = {
     headers: { Authorization: token }
   }
@@ -63,7 +103,14 @@ const updateIngredientInRecipe = (recipe, ingredient) => {
 }
 
 const deleteIngredientFromRecipe = (recipe, ingredientId) => {
-  console.log('we deleting now boys!')
+  if (token === null) {
+    //No authorization
+    const error = new Error()
+    error.name = 'AuthenticationError'
+    error.message = 'You need to be logged in in order to modify a recipe'
+    throw error
+  }
+
   const config = {
     headers: { Authorization: token }
   }

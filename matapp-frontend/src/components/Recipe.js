@@ -105,9 +105,20 @@ const Recipe = () => {
 
   const saveToBackend = async () => {
     localSave()
-    const response = await recipeService.updateAllIngredients(activeRecipe, ingredients)
-    console.log('response return data', response.data)
-    dispatch(setActiveRecipe(response.data))
+    try {
+      const response = await recipeService.updateAllIngredients(activeRecipe, ingredients)
+      console.log('response return data', response.data)
+      dispatch(setActiveRecipe(response.data))
+    } catch (error) {
+      if (typeof error.response.data.error !== 'undefined')
+        dispatch(createNotification(error.response.data.error))
+      else if (typeof error.message !== 'undefined'){
+        dispatch(createNotification(error.message))
+      }
+      else {
+        dispatch(createNotification('Some kind of error happened'))
+      }
+    }
   }
 
   const saveRecipeTitle = async (event) => {
@@ -135,9 +146,17 @@ const Recipe = () => {
       dispatch(updateRecipe(activeRecipe))
       setEditTitle(false)
     } catch (error) {
-      dispatch(createNotification(error.response.data.error))
       console.log(error)
-      console.log(error.response.data.error)
+      //Check if error is from server or locally
+      if (typeof error.response.data.error !== 'undefined'){
+        dispatch(createNotification(error.response.data.error))
+      }
+      else if (typeof error.message !== 'undefined'){
+        dispatch(createNotification(error.message))
+      }
+      else {
+        dispatch(createNotification('Some kind of error happened'))
+      }
     }
   }
 

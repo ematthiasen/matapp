@@ -28,6 +28,7 @@ const RecipeListItem = ({ recipe, handleCloneRecipe, handleShowRecipe, handleDel
     <TableRow key={recipe.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">{recipe.title}</TableCell>
       <TableCell>{recipe.date}</TableCell>
+      <TableCell>{recipe.owner.username}</TableCell>
       <TableCell align='right' size='small'>
         <ButtonGroup><Button variant='contained' onClick={() => handleCloneRecipe(recipe) }>Copy</Button>
           {recipe.template ?
