@@ -66,6 +66,9 @@ const RecipeList = () => {
             <TableCell>
               Date created
             </TableCell>
+            <TableCell>
+              Recipe Owner
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

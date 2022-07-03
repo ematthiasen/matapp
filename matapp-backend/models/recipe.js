@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 const ingredientSchema = require('./ingredient')
 const dateFormatter = require('../utils/dateFormatter')
+const logger = require('../utils/logger')
 
 const recipeSchema = new mongoose.Schema({
   title: {
@@ -17,6 +18,11 @@ const recipeSchema = new mongoose.Schema({
     type: Date,
     required: false,
     min: '2021-01-01'
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
   ingredients: [ingredientSchema]
 })
