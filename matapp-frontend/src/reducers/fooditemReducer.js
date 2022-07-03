@@ -16,7 +16,7 @@ export const addFooditem = (fooditem) => {
         type: 'ADD_FOODITEM',
         data: createdItem.data
       })
-      return null
+      return createdItem.data
     }
     catch (error) {
       console.log('testing', error.response.data.error)
