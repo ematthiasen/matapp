@@ -1,5 +1,7 @@
-App running on:
-https://peaceful-waters-51071.herokuapp.com/
+Moved cloud deployment from heroku to render.com, App now running on:
+https://matapp.onrender.com/
+
+App is now deployed through a docker container. 
 
 Basic app concept:
 
