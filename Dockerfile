@@ -4,7 +4,9 @@ FROM node:14 AS frontend-build
 
 COPY ./matapp-frontend/ /usr/local/matapp/frontend/
 WORKDIR /usr/local/matapp/frontend/
-RUN npm run dockerbuild
+ENV NODE_ENV=production
+RUN npm ci
+RUN npm build
 
 FROM node:14
 
