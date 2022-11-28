@@ -4,9 +4,9 @@ FROM node:14 AS frontend-build
 
 COPY ./matapp-frontend/ /usr/local/matapp/frontend/
 WORKDIR /usr/local/matapp/frontend/
-# ENV NODE_ENV=production
-RUN npm install --production
-RUN npm run build --prod
+ENV NODE_ENV=production
+RUN npm install
+RUN npm run build
 
 FROM node:14
 
