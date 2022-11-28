@@ -18,7 +18,8 @@
     "react-scripts": "4.0.3",
     "react-select": "^5.0.0",
     "redux": "^4.1.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "redux-devtools-extension": "^2.13.9"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,8 +48,7 @@
     ]
   },
   "devDependencies": {
-    "json-server": "^0.16.3",
-    "redux-devtools-extension": "^2.13.9"
+    "json-server": "^0.16.3"
   },
   "proxy": "http://localhost:3003"
 }
