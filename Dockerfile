@@ -6,7 +6,7 @@ COPY ./matapp-frontend/ /usr/local/matapp/frontend/
 WORKDIR /usr/local/matapp/frontend/
 ENV NODE_ENV=production
 RUN npm ci
-RUN npm build
+RUN npm run-script build
 
 FROM node:14
 
