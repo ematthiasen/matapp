@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=prodution node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "heroku:deploy": "git subtree push --prefix matapp-backend heroku main"
@@ -12,7 +12,7 @@
   "author": "Eirik Matthiasen",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
