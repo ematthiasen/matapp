@@ -1,0 +1,12 @@
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+matapp-frontend/node_modules
+matapp-frontend/build
+
+
+matapp-backend/.env
+matapp-backend/node_modules
+matapp-backend/.gitignore
+matapp-backend/build
